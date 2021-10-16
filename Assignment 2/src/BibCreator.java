@@ -17,13 +17,14 @@ public class BibCreator {
     public static String doi = "doi";
     public static String issn = "ISSN";
     public static String month = "month";
+    public static int invalidFiles = 0;
 
-    public static void processFilesForValidation(Scanner sc, PrintWriter IEEEWriter, PrintWriter ACMWriter, PrintWriter NJWriter, int count) {
+    public static void processFilesForValidation(Scanner sc, PrintWriter IEEEWriter, PrintWriter ACMWriter, PrintWriter NJWriter, File IEEEFile, File ACMFile, File NJFile, int count) {
 
         String IEEE;
         String ACM;
         String NJ;
-        String[] l_authorNamesArray;
+        String[] l_authorNamesArray = {};
         String l_author = "", l_journal = "", l_title = "", l_year = "", l_volume = "";
         String l_number = "", l_pages = "", l_keywords = "", l_doi = "", l_issn = "";
         String l_month = "";
@@ -34,7 +35,7 @@ public class BibCreator {
         sc.useDelimiter("@ARTICLE");  //To uniquely identify each article as each article starts with @ARTICLE.
         try {
             //Creates temporary buffer file to store each article data.
-            bufferFileWriter = new PrintWriter(new FileOutputStream("E:\\CU One Drive\\OneDrive - Concordia University - Canada\\Fall 2021\\PPS\\Assignments\\Assignment 2\\Output\\bufferFile.txt"));
+            bufferFileWriter = new PrintWriter(new FileOutputStream("Output\\bufferFile.txt"));
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -52,8 +53,8 @@ public class BibCreator {
                 //Second while loop, dedicated for each line within the same article.
                 while (bufferScanner.hasNextLine()) {
                     //Reads the line from buffer file.
-                    String lineRead = sc.nextLine();
-
+                    String lineRead = bufferScanner.nextLine();
+                    //System.out.println(lineRead);
                     //Checks whether the line contains author field.
                     if (lineRead.contains(author)) {
                         //Check for an empty field.
@@ -65,7 +66,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains journal field
-                    if (lineRead.contains(journal)) {
+                    else if (lineRead.contains(journal)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, journal, bufferScanner, count, articleCount);
                         //Reads journal name.
@@ -73,7 +74,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains title field
-                    if (lineRead.contains(title)) {
+                    else if (lineRead.contains(title)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, title, bufferScanner, count, articleCount);
                         //Reads title of the article.
@@ -81,7 +82,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains year field
-                    if (lineRead.contains(year)) {
+                    else if (lineRead.contains(year)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, year, bufferScanner, count, articleCount);
                         //Reads publication year of the article.
@@ -89,7 +90,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains volume field
-                    if (lineRead.contains(volume)) {
+                    else if (lineRead.contains(volume)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, volume, bufferScanner, count, articleCount);
                         //Reads volume information of the article.
@@ -97,7 +98,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains number field
-                    if (lineRead.contains(number)) {
+                    else if (lineRead.contains(number)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, number, bufferScanner, count, articleCount);
                         //Reads number field of the article.
@@ -105,7 +106,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains pages field
-                    if (lineRead.contains(pages)) {
+                    else if (lineRead.contains(pages)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, pages, bufferScanner, count, articleCount);
                         //Reads pages field of the article.
@@ -113,7 +114,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains keywords field
-                    if (lineRead.contains(keywords)) {
+                    else if (lineRead.contains(keywords)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, keywords, bufferScanner, count, articleCount);
                         //Reads keywords field of the article.
@@ -121,7 +122,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains doi field
-                    if (lineRead.contains(doi)) {
+                    else if (lineRead.contains(doi)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, doi, bufferScanner, count, articleCount);
                         //Reads doi field of the article.
@@ -129,7 +130,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains ISSN field
-                    if (lineRead.contains(issn)) {
+                    else if (lineRead.contains(issn)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, issn, bufferScanner, count, articleCount);
                         //Reads ISSN field of the article.
@@ -137,7 +138,7 @@ public class BibCreator {
                     }
 
                     //Checks whether the line contains Month field
-                    if (lineRead.contains(month)) {
+                    else if (lineRead.contains(month)) {
                         //Check for an empty field.
                         checkEmpty(lineRead, month, bufferScanner, count, articleCount);
                         //Reads Month field of the article.
@@ -145,9 +146,9 @@ public class BibCreator {
                     }
                 }
                 if (l_author.length() > 0 && l_journal.length() > 0 && l_title.length() > 0 && l_year.length() > 0 && l_volume.length() > 0 && l_number.length() > 0 && l_pages.length() > 0 && l_keywords.length() > 0 && l_doi.length() > 0 && l_issn.length() > 0 && l_month.length() > 0) {
-                    IEEE = "" + l_author + ". " + l_title + ", " + l_journal + ", vol. " + l_volume + ", no." + l_number + ", p." + l_pages + ", " + l_month + " " + l_year + ".";
-                    ACM = "[" + articleCount + "]   " + l_author + ". " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + "(" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
-                    NJ = "" + l_author + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_pages + "(" + l_year + ").";
+                    IEEE = "" + String.join(",", l_authorNamesArray) + ". " + l_title + ", " + l_journal + ", vol. " + l_volume + ", no." + l_number + ", p." + l_pages + ", " + l_month + " " + l_year + ".";
+                    ACM = "[" + articleCount + "]  " + l_authorNamesArray[0] + " et al. " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + "(" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
+                    NJ = "" + String.join(" &", l_authorNamesArray) + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_pages + "(" + l_year + ").";
                     IEEEWriter.println(IEEE);
                     IEEEWriter.println();
                     ACMWriter.println(ACM);
@@ -158,23 +159,49 @@ public class BibCreator {
                 }
             } catch (FileInvalidException e) {
                 System.out.println(e.getMessage());
+                /*File f1 = new File("Output//IEEE"+count+".json");
+                System.out.println(f1.length());
+                File f2 = new File("Output//ACM"+count+".json");
+                File f3 = new File("Output//NJ"+count+".json");
+                */
+               /* try {
+                    IEEEFile.delete();
+                    IEEEFile.createNewFile();
+                    ACMFile.delete();
+                    ACMFile.createNewFile();
+                    NJFile.delete();
+                    NJFile.createNewFile();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }*/
+                IEEEWriter.close();
+                ACMWriter.close();
+                NJWriter.close();
+                IEEEFile.delete();
+                //IEEEFile.createNewFile();
+                ACMFile.delete();
+                //ACMFile.createNewFile();
+                NJFile.delete();
+                //NJFile.createNewFile();
+                invalidFiles++;
+                break;
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
             }
-            IEEEWriter.close();
-            ACMWriter.close();
-            NJWriter.close();
-            bufferFileWriter.close();
         }
+        IEEEWriter.close();
+        ACMWriter.close();
+        NJWriter.close();
+
     }
 
     /**
      * Checks empty field in the .bib file.
      *
-     * @param p_line Line read from the buffer file.
-     * @param p_fieldName Name of the field.
-     * @param p_scanner Scanner class object to read the file.
-     * @param p_count Count for the file number.
+     * @param p_line         Line read from the buffer file.
+     * @param p_fieldName    Name of the field.
+     * @param p_scanner      Scanner class object to read the file.
+     * @param p_count        Count for the file number.
      * @param p_articleCount Count for the article.
      * @throws FileInvalidException throws if file has empty field.
      */
@@ -183,9 +210,9 @@ public class BibCreator {
             p_scanner.close();
             throw new FileInvalidException("Error: Detected Empty Field!\n ======================================\n\n"
                     + "Problem detected with input file: Latex" + p_count + ".bib\n"
-                    + "File is invalid: Field " + p_fieldName + " is empty in article number " + p_articleCount + "."
-                    + "Processing stopped at this point."
-                    + "Other empty fields may be present as well!");
+                    + "File is invalid: Field " + p_fieldName + " is empty in article number " + p_articleCount + ". "
+                    + "Processing stopped at this point. "
+                    + "Other empty fields may be present as well!\n");
         }
     }
 
@@ -193,7 +220,7 @@ public class BibCreator {
      * Returns the string from the line passed in the argument stating from the mentioned index.
      *
      * @param p_lineRead Line from which data is required to be extracted.
-     * @param p_index Index in the line.
+     * @param p_index    Index in the line.
      * @return String with required data.
      */
     public static String fetchRequiredInformationFromLine(String p_lineRead, int p_index) {
@@ -256,6 +283,7 @@ public class BibCreator {
 
     /**
      * Main method
+     *
      * @param args
      */
     public static void main(String args[]) {
@@ -268,9 +296,9 @@ public class BibCreator {
 
         System.out.println("Welcome to BibCreator");
         File file = new File("E:\\CU One Drive\\OneDrive - Concordia University - Canada\\Fall 2021\\PPS\\Assignments\\Assignment 2\\Output");
-        while (numberOfFiles <= fileCount) {
+        while (numberOfFiles < fileCount) {
             try {
-                sc[numberOfFiles] = new Scanner(new FileInputStream("Latex" + numberOfFiles + ".bib"));
+                sc[numberOfFiles] = new Scanner(new FileInputStream("Latex" + (numberOfFiles + 1) + ".bib"));
                 numberOfFiles++;
             } catch (FileNotFoundException e) {
                 System.out.println("Could not open input file Latex" + numberOfFiles + ".bib for reading. Please check if file exists! Program will terminate after closing any opened files.");
@@ -279,18 +307,24 @@ public class BibCreator {
 
         if (numberOfFiles == fileCount) {
             for (int i = 0; i < fileCount; i++) {
-                File IEEEFile = new File("Output\\IEEE" + i + ".bib");
-                File ACMFile = new File("Output\\ACM" + i + ".bib");
-                File NJFile = new File("Output\\NJ" + i + ".bib");
+                File IEEEFile = new File("Output\\IEEE" + (i + 1) + ".json");
+                File ACMFile = new File("Output\\ACM" + (i + 1) + ".json");
+                File NJFile = new File("Output\\NJ" + (i + 1) + ".json");
 
                 try {
                     IEEEWriter = new PrintWriter(new FileOutputStream(IEEEFile));
                     ACMWriter = new PrintWriter(new FileOutputStream(ACMFile));
                     NJWriter = new PrintWriter(new FileOutputStream(NJFile));
+                    processFilesForValidation(sc[i], IEEEWriter, ACMWriter, NJWriter, IEEEFile, ACMFile, NJFile, i + 1);
+                    sc[i].close();
                 } catch (FileNotFoundException e) {
                     System.out.println(e.getMessage());
                 }
             }
         }
+
+        System.out.println("\nA total of " + invalidFiles + " invalid File(s) were discovered. " + (fileCount - invalidFiles) + " File(s) have been created out of valid Files\n\n");
+
+     
     }
 }

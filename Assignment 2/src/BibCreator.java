@@ -11,6 +11,7 @@ public class BibCreator {
     public static String title = "title";
     public static String year = "year";
     public static String volume = "volume";
+    public static String number = "number";
     public static String pages = "pages";
     public static String keywords = "keywords";
     public static String doi = "doi";
@@ -24,6 +25,7 @@ public class BibCreator {
         String l_title = "";
         String l_year = "";
         String l_volume = "";
+        String l_number = "";
         String l_pages = "";
         String l_keywords = "";
         String l_doi = "";
@@ -49,37 +51,123 @@ public class BibCreator {
             try {
                 //Reads the data available in buffer file.
                 bufferScanner = new Scanner(new FileInputStream("E:\\CU One Drive\\OneDrive - Concordia University - Canada\\Fall 2021\\PPS\\Assignments\\Assignment 2\\Output\\bufferFile.txt"));
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-            }
 
-            try {
                 while (bufferScanner.hasNextLine()) {
                     //Reads the line from buffer file.
                     String lineRead = sc.nextLine();
+
                     //Checks whether the line contains author field.
                     if (lineRead.contains(author)) {
-                        if (lineRead.contains("{}")) //Check for an empty field.
-                        {
-                            bufferScanner.close();
-                            throw new FileInvalidException("Error: Detected Empty Field!\n ======================================\n\n"
-                                    + "Problem detected with input file: Latex" + count + ".bib\n"
-                                    + "File is invalid: Field " + author + " is empty in article number " + articleCount + "."
-                                    + "Processing stopped at this point."
-                                    + "Other empty fields may be present as well!");
-                        } else {
-                            //Fetches author names joined using "and" string.
-                            l_author = lineRead.substring(8, lineRead.length() - 3);
-                            //Array of author names.
-                            l_authorNamesArray = parseAuthors(l_author);
-                        }
+                        //Check for an empty field.
+                        checkEmpty(lineRead, author, bufferScanner, count, articleCount);
+                        //Fetches author names joined using "and" string.
+                        l_author = fetchRequiredInformationFromLine(lineRead, 8);
+                        //Array of author names.
+                        l_authorNamesArray = parseAuthors(l_author);
+                    }
+
+                    //Checks whether the line contains journal field
+                    if (lineRead.contains(journal)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, journal, bufferScanner, count, articleCount);
+                        //Reads journal name.
+                        l_journal = fetchRequiredInformationFromLine(lineRead, 9);
+                    }
+
+                    //Checks whether the line contains title field
+                    if (lineRead.contains(title)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, title, bufferScanner, count, articleCount);
+                        //Reads title of the article.
+                        l_title = fetchRequiredInformationFromLine(lineRead, 7);
+                    }
+
+                    //Checks whether the line contains year field
+                    if (lineRead.contains(year)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, year, bufferScanner, count, articleCount);
+                        //Reads publication year of the article.
+                        l_year = fetchRequiredInformationFromLine(lineRead, 6);
+                    }
+
+                    //Checks whether the line contains volume field
+                    if (lineRead.contains(volume)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, volume, bufferScanner, count, articleCount);
+                        //Reads volume information of the article.
+                        l_volume = fetchRequiredInformationFromLine(lineRead, 8);
+                    }
+
+                    //Checks whether the line contains number field
+                    if (lineRead.contains(number)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, number, bufferScanner, count, articleCount);
+                        //Reads number field of the article.
+                        l_number = fetchRequiredInformationFromLine(lineRead, 8);
+                    }
+
+                    //Checks whether the line contains pages field
+                    if (lineRead.contains(pages)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, pages, bufferScanner, count, articleCount);
+                        //Reads pages field of the article.
+                        l_pages = fetchRequiredInformationFromLine(lineRead, 7);
+                    }
+
+                    //Checks whether the line contains keywords field
+                    if (lineRead.contains(keywords)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, keywords, bufferScanner, count, articleCount);
+                        //Reads keywords field of the article.
+                        l_keywords = fetchRequiredInformationFromLine(lineRead, 10);
+                    }
+
+                    //Checks whether the line contains doi field
+                    if (lineRead.contains(doi)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, doi, bufferScanner, count, articleCount);
+                        //Reads doi field of the article.
+                        l_doi = fetchRequiredInformationFromLine(lineRead, 5);
+                    }
+
+                    //Checks whether the line contains ISSN field
+                    if (lineRead.contains(issn)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, issn, bufferScanner, count, articleCount);
+                        //Reads ISSN field of the article.
+                        l_issn = fetchRequiredInformationFromLine(lineRead, 6);
+                    }
+
+                    //Checks whether the line contains Month field
+                    if (lineRead.contains(month)) {
+                        //Check for an empty field.
+                        checkEmpty(lineRead, month, bufferScanner, count, articleCount);
+                        //Reads Month field of the article.
+                        l_month = fetchRequiredInformationFromLine(lineRead, 7);
                     }
                 }
             } catch (FileInvalidException e) {
                 System.out.println(e.getMessage());
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
             }
 
         }
+    }
+
+    public static void checkEmpty(String p_line, String p_fieldName, Scanner p_scanner, int p_count, int p_articleCount) throws FileInvalidException {
+        if (p_line.contains("{}")) {
+            p_scanner.close();
+            throw new FileInvalidException("Error: Detected Empty Field!\n ======================================\n\n"
+                    + "Problem detected with input file: Latex" + p_count + ".bib\n"
+                    + "File is invalid: Field " + p_fieldName + " is empty in article number " + p_articleCount + "."
+                    + "Processing stopped at this point."
+                    + "Other empty fields may be present as well!");
+        }
+    }
+
+    public static String fetchRequiredInformationFromLine(String p_lineRead, int p_index) {
+        return p_lineRead.substring(p_index, p_lineRead.length() - 3);
     }
 
     /**
@@ -168,9 +256,7 @@ public class BibCreator {
                 } catch (FileNotFoundException e) {
                     System.out.println(e.getMessage());
                 }
-
             }
         }
     }
-
 }

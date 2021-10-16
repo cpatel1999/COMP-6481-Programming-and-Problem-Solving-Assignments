@@ -19,17 +19,13 @@ public class BibCreator {
     public static String month = "month";
 
     public static void processFilesForValidation(Scanner sc, PrintWriter IEEEWriter, PrintWriter ACMWriter, PrintWriter NJWriter, int count) {
-        String l_author = "";
+
+        String IEEE;
+        String ACM;
+        String NJ;
         String[] l_authorNamesArray;
-        String l_journal = "";
-        String l_title = "";
-        String l_year = "";
-        String l_volume = "";
-        String l_number = "";
-        String l_pages = "";
-        String l_keywords = "";
-        String l_doi = "";
-        String l_issn = "";
+        String l_author = "", l_journal = "", l_title = "", l_year = "", l_volume = "";
+        String l_number = "", l_pages = "", l_keywords = "", l_doi = "", l_issn = "";
         String l_month = "";
 
         int articleCount = 0;  //To count the number of articles in the .bib file.
@@ -43,6 +39,7 @@ public class BibCreator {
             System.out.println(e.getMessage());
         }
 
+        //First while loop, dedicated for each article within the same file.
         while (sc.hasNext()) {
             String articleJsonRead = sc.next();
             articleCount++;  //Article count is incremented to track number of articles in the single .bib file.
@@ -52,6 +49,7 @@ public class BibCreator {
                 //Reads the data available in buffer file.
                 bufferScanner = new Scanner(new FileInputStream("E:\\CU One Drive\\OneDrive - Concordia University - Canada\\Fall 2021\\PPS\\Assignments\\Assignment 2\\Output\\bufferFile.txt"));
 
+                //Second while loop, dedicated for each line within the same article.
                 while (bufferScanner.hasNextLine()) {
                     //Reads the line from buffer file.
                     String lineRead = sc.nextLine();
@@ -146,15 +144,40 @@ public class BibCreator {
                         l_month = fetchRequiredInformationFromLine(lineRead, 7);
                     }
                 }
+                if (l_author.length() > 0 && l_journal.length() > 0 && l_title.length() > 0 && l_year.length() > 0 && l_volume.length() > 0 && l_number.length() > 0 && l_pages.length() > 0 && l_keywords.length() > 0 && l_doi.length() > 0 && l_issn.length() > 0 && l_month.length() > 0) {
+                    IEEE = "" + l_author + ". " + l_title + ", " + l_journal + ", vol. " + l_volume + ", no." + l_number + ", p." + l_pages + ", " + l_month + " " + l_year + ".";
+                    ACM = "[" + articleCount + "]   " + l_author + ". " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + "(" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
+                    NJ = "" + l_author + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_pages + "(" + l_year + ").";
+                    IEEEWriter.println(IEEE);
+                    IEEEWriter.println();
+                    ACMWriter.println(ACM);
+                    ACMWriter.println();
+                    NJWriter.println(NJ);
+                    NJWriter.println();
+                    bufferScanner.close();
+                }
             } catch (FileInvalidException e) {
                 System.out.println(e.getMessage());
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
             }
-
+            IEEEWriter.close();
+            ACMWriter.close();
+            NJWriter.close();
+            bufferFileWriter.close();
         }
     }
 
+    /**
+     * Checks empty field in the .bib file.
+     *
+     * @param p_line Line read from the buffer file.
+     * @param p_fieldName Name of the field.
+     * @param p_scanner Scanner class object to read the file.
+     * @param p_count Count for the file number.
+     * @param p_articleCount Count for the article.
+     * @throws FileInvalidException throws if file has empty field.
+     */
     public static void checkEmpty(String p_line, String p_fieldName, Scanner p_scanner, int p_count, int p_articleCount) throws FileInvalidException {
         if (p_line.contains("{}")) {
             p_scanner.close();
@@ -166,6 +189,13 @@ public class BibCreator {
         }
     }
 
+    /**
+     * Returns the string from the line passed in the argument stating from the mentioned index.
+     *
+     * @param p_lineRead Line from which data is required to be extracted.
+     * @param p_index Index in the line.
+     * @return String with required data.
+     */
     public static String fetchRequiredInformationFromLine(String p_lineRead, int p_index) {
         return p_lineRead.substring(p_index, p_lineRead.length() - 3);
     }
@@ -224,6 +254,10 @@ public class BibCreator {
         return newArray;
     }
 
+    /**
+     * Main method
+     * @param args
+     */
     public static void main(String args[]) {
         Scanner kb = new Scanner(System.in);
         Scanner[] sc = new Scanner[fileCount];

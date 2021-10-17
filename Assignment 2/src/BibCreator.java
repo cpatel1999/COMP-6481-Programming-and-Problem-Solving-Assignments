@@ -2,6 +2,16 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * Assignment 1
+ *
+ * @author CHARIT
+ * Written by: Charit Patel, id: 40160658
+ * <p>
+ * The main task of this tool is read and process a given .bib file (which has one or more articles) and
+ * create 3 different files with the correct reference formats for IEEE, ACM and NJ.
+ * It also handles necessary exceptions along with the exceptions mentioned in the problem statement of the assignment.
+ */
 public class BibCreator {
 
     public static int fileCount = 10;
@@ -18,13 +28,33 @@ public class BibCreator {
     public static String issn = "ISSN";
     public static String month = "month";
     public static int invalidFiles = 0;
+    public static Scanner kb = new Scanner(System.in);
 
+    /**
+     * This is the most important method for the working of the entire application.
+     * It reads each .bib file having json like structure and validate them.
+     * If files have valid structure then method parses them so that the data can be written in the three different formats.
+     * 1. IEEE
+     * 2. ACM
+     * 3. NJ
+     * <p>
+     * Here I have created temporary file bufferFile.txt to store and treat each article.
+     *
+     * @param sc         Scanner class object to read from the file.
+     * @param IEEEWriter PrintWriter class object to write into IEEEx.json file.
+     * @param ACMWriter  PrintWriter class object to write into ACMx.json file.
+     * @param NJWriter   PrintWriter class object to write into NJx.json file.
+     * @param IEEEFile   File class object for IEEEx.json file.
+     * @param ACMFile    File class object for ACMx.json file.
+     * @param NJFile     File class object for NJx.json file.
+     * @param count      File number.
+     */
     public static void processFilesForValidation(Scanner sc, PrintWriter IEEEWriter, PrintWriter ACMWriter, PrintWriter NJWriter, File IEEEFile, File ACMFile, File NJFile, int count) {
 
         String IEEE;
         String ACM;
         String NJ;
-        String[] l_authorNamesArray = {};
+        String[] l_authorNamesArray = {};  //To store author names
         String l_author = "", l_journal = "", l_title = "", l_year = "", l_volume = "";
         String l_number = "", l_pages = "", l_keywords = "", l_doi = "", l_issn = "";
         String l_month = "";
@@ -145,9 +175,10 @@ public class BibCreator {
                         l_month = fetchRequiredInformationFromLine(lineRead, 7);
                     }
                 }
+                //Checks if all the variable have a data stored within. If so, then appends them in IEEE, ACM and NJ format.
                 if (l_author.length() > 0 && l_journal.length() > 0 && l_title.length() > 0 && l_year.length() > 0 && l_volume.length() > 0 && l_number.length() > 0 && l_pages.length() > 0 && l_keywords.length() > 0 && l_doi.length() > 0 && l_issn.length() > 0 && l_month.length() > 0) {
-                    IEEE = "" + String.join(",", l_authorNamesArray) + ". " + l_title + ", " + l_journal + ", vol. " + l_volume + ", no." + l_number + ", p." + l_pages + ", " + l_month + " " + l_year + ".";
-                    ACM = "[" + articleCount + "]  " + l_authorNamesArray[0] + " et al. " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + "(" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
+                    IEEE = "" + String.join(",", l_authorNamesArray) + ". \"" + l_title + "\", " + l_journal + ", vol. " + l_volume + ", no." + l_number + ", p. " + l_pages + ", " + l_month + " " + l_year + ".";
+                    ACM = "[" + articleCount + "]  " + l_authorNamesArray[0] + " et al. " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + " (" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
                     NJ = "" + String.join(" &", l_authorNamesArray) + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_pages + "(" + l_year + ").";
                     IEEEWriter.println(IEEE);
                     IEEEWriter.println();
@@ -159,30 +190,13 @@ public class BibCreator {
                 }
             } catch (FileInvalidException e) {
                 System.out.println(e.getMessage());
-                /*File f1 = new File("Output//IEEE"+count+".json");
-                System.out.println(f1.length());
-                File f2 = new File("Output//ACM"+count+".json");
-                File f3 = new File("Output//NJ"+count+".json");
-                */
-               /* try {
-                    IEEEFile.delete();
-                    IEEEFile.createNewFile();
-                    ACMFile.delete();
-                    ACMFile.createNewFile();
-                    NJFile.delete();
-                    NJFile.createNewFile();
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }*/
                 IEEEWriter.close();
                 ACMWriter.close();
                 NJWriter.close();
+                //Deletes all the invalid files.
                 IEEEFile.delete();
-                //IEEEFile.createNewFile();
                 ACMFile.delete();
-                //ACMFile.createNewFile();
                 NJFile.delete();
-                //NJFile.createNewFile();
                 invalidFiles++;
                 break;
             } catch (FileNotFoundException e) {
@@ -192,7 +206,6 @@ public class BibCreator {
         IEEEWriter.close();
         ACMWriter.close();
         NJWriter.close();
-
     }
 
     /**
@@ -282,26 +295,50 @@ public class BibCreator {
     }
 
     /**
+     * Reads the data available in the file.
+     *
+     * @param reader BufferedReader class object to read the file.
+     */
+    public static void readFile(BufferedReader reader) throws IOException, FileNotFoundException {
+        String line;
+        System.out.println("Please enter the name of one of the files that you need to review:");
+        String fileToReview = kb.nextLine();
+        reader = new BufferedReader(new FileReader("Output\\" + fileToReview));
+        System.out.println("Here are the contents of the successfully created Jason File: " + fileToReview);
+        line = reader.readLine();
+        while (line != null) {
+            System.out.println(line);
+            line = reader.readLine();
+        }
+        System.out.println("Goodbye! Hope you have enjoyed creating the needed files using BibCreator.");
+    }
+
+    /**
      * Main method
      *
      * @param args
      */
     public static void main(String args[]) {
-        Scanner kb = new Scanner(System.in);
+
         Scanner[] sc = new Scanner[fileCount];
         PrintWriter ACMWriter = null;
         PrintWriter IEEEWriter = null;
         PrintWriter NJWriter = null;
         int numberOfFiles = 0;
 
-        System.out.println("Welcome to BibCreator");
+        System.out.println("Welcome to BibCreator\n");
         File file = new File("E:\\CU One Drive\\OneDrive - Concordia University - Canada\\Fall 2021\\PPS\\Assignments\\Assignment 2\\Output");
         while (numberOfFiles < fileCount) {
             try {
                 sc[numberOfFiles] = new Scanner(new FileInputStream("Latex" + (numberOfFiles + 1) + ".bib"));
                 numberOfFiles++;
             } catch (FileNotFoundException e) {
-                System.out.println("Could not open input file Latex" + numberOfFiles + ".bib for reading. Please check if file exists! Program will terminate after closing any opened files.");
+                System.out.println("Could not open input file Latex" + (numberOfFiles + 1) + ".bib for reading.\n\n"
+                        + "Please check if file exists! Program will terminate after closing any opened files.");
+                for (int i = 0; i < numberOfFiles; i++) {
+                    sc[i].close();
+                }
+                break;
             }
         }
 
@@ -321,10 +358,27 @@ public class BibCreator {
                     System.out.println(e.getMessage());
                 }
             }
+            System.out.println("\nA total of " + invalidFiles + " invalid File(s) were discovered. " + (fileCount - invalidFiles) + " File(s) have been created out of valid Files\n\n");
+
+            BufferedReader reader = null;
+            try {
+                readFile(reader);
+            } catch (FileNotFoundException e) {
+                System.out.println("Could not open input file. File does not exist; possibly it could not be created!\n");
+                System.out.println("However, you will be allowed another chance to enter another file name.");
+                System.out.println("Please enter the name of one of the files that you need to review:");
+                try {
+                    readFile(reader);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("Could not open input file again! Either file does not exist or could not be created.");
+                    System.out.println("Sorry! I am unable to display your desired files! Program will exit!");
+                    System.exit(0);
+                } catch (IOException ioException) {
+                    System.out.println(ioException.getMessage());
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
-
-        System.out.println("\nA total of " + invalidFiles + " invalid File(s) were discovered. " + (fileCount - invalidFiles) + " File(s) have been created out of valid Files\n\n");
-
-     
     }
 }

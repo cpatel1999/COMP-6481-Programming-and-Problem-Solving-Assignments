@@ -83,7 +83,7 @@ public class BibCreator {
                 //Second while loop, dedicated for each line within the same article.
                 while (bufferScanner.hasNextLine()) {
                     //Reads the line from buffer file.
-                    String lineRead = bufferScanner.nextLine();
+                    String lineRead = bufferScanner.nextLine().trim();
                     //System.out.println(lineRead);
                     //Checks whether the line contains author field.
                     if (lineRead.contains(author)) {
@@ -177,9 +177,9 @@ public class BibCreator {
                 }
                 //Checks if all the variable have a data stored within. If so, then appends them in IEEE, ACM and NJ format.
                 if (l_author.length() > 0 && l_journal.length() > 0 && l_title.length() > 0 && l_year.length() > 0 && l_volume.length() > 0 && l_number.length() > 0 && l_pages.length() > 0 && l_keywords.length() > 0 && l_doi.length() > 0 && l_issn.length() > 0 && l_month.length() > 0) {
-                    IEEE = "" + String.join(",", l_authorNamesArray) + ". \"" + l_title + "\", " + l_journal + ", vol. " + l_volume + ", no." + l_number + ", p. " + l_pages + ", " + l_month + " " + l_year + ".";
-                    ACM = "[" + articleCount + "]  " + l_authorNamesArray[0] + " et al. " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + " (" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
-                    NJ = "" + String.join(" &", l_authorNamesArray) + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_pages + "(" + l_year + ").";
+                    IEEE = String.join(",", l_authorNamesArray) + ". \"" + l_title + "\", " + l_journal + ", vol. " + l_volume + ", no. " + l_number + ", p. " + l_pages + ", " + l_month + " " + l_year + ".";
+                    ACM = "[" + articleCount + "]" + l_authorNamesArray[0] + " et al. " + l_year + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_number + " (" + l_year + "), " + l_pages + ". " + "DOI:https://doi.org/" + l_doi + ".";
+                    NJ = String.join(" &", l_authorNamesArray) + ". " + l_title + ". " + l_journal + ". " + l_volume + ", " + l_pages + "(" + l_year + ").";
                     IEEEWriter.println(IEEE);
                     IEEEWriter.println();
                     ACMWriter.println(ACM);
@@ -237,7 +237,7 @@ public class BibCreator {
      * @return String with required data.
      */
     public static String fetchRequiredInformationFromLine(String p_lineRead, int p_index) {
-        return p_lineRead.substring(p_index, p_lineRead.length() - 3);
+        return p_lineRead.substring(p_index, p_lineRead.length() - 2);
     }
 
     /**

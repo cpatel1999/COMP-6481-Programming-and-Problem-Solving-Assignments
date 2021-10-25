@@ -50,6 +50,7 @@ public class Driver {
         if (pass.equals(password))
             return true;
         else
+            System.out.println("Incorrect Password.\n");
             return false;
     }
 
@@ -59,7 +60,7 @@ public class Driver {
      * @param computerObject Object representing computer.
      */
     public static void displayComputerDetails(Computer computerObject) {
-        System.out.println(computerObject);
+        System.out.println(computerObject +"\n");
     }
 
     /**
@@ -69,9 +70,24 @@ public class Driver {
      * @param inventory Array of computer objects.
      */
     public static void findComputersBy(String brandName, ArrayList<Computer> inventory) {
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).getBrand().equals(brandName)) {
-                displayComputerDetails(inventory.get(i));
+        System.out.println("\nInformation of all computers having brand "+brandName);
+        int count = 0;
+        if(inventory.size() == 0)
+        {
+            System.out.println("\nInventory of computers is empty. Please add computer details first.\n");
+        }
+        else {
+            for (int i = 0; i < inventory.size(); i++) {
+
+                if (inventory.get(i).getBrand().equals(brandName)) {
+                    System.out.println("Computer #" + (count + 1));
+                    displayComputerDetails(inventory.get(i));
+                    count++;
+                }
+            }
+            if(count == 0)
+            {
+                System.out.println("\nNo computer is found having brand name "+brandName+"\n");
             }
         }
     }
@@ -83,9 +99,24 @@ public class Driver {
      * @param inventory Array of computer objects.
      */
     public static void findCheaperThan(double price, ArrayList<Computer> inventory) {
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).getPrice() < price) {
-                displayComputerDetails(inventory.get(i));
+        System.out.println("\nInformation of all computers having price less than "+price);
+        int count = 0;
+        if(inventory.size() == 0)
+        {
+            System.out.println("\nInventory of computers is empty. Please add computer details first.\n");
+        }
+        else {
+            for (int i = 0; i < inventory.size(); i++) {
+
+                if (inventory.get(i).getPrice() < price) {
+                    System.out.println("Computer #" + (count + 1));
+                    displayComputerDetails(inventory.get(i));
+                    count++;
+                }
+            }
+            if(count == 0)
+            {
+                System.out.println("\nNo computer is found having price less than "+price+"\n");
             }
         }
     }
@@ -246,7 +277,7 @@ public class Driver {
                     break;
 
                 default:
-                    System.out.println("Please select correct option.");
+                    System.out.println("Please select correct option.\n");
                     break;
             }
         }

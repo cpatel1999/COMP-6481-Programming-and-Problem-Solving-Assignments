@@ -37,9 +37,6 @@ public class ArrayRepeatUsingStack {
         for (int i = 0; i < n; i++) {
             stack.push(sc.nextInt());
         }
-        System.out.println(stack.size());
-        int index = stack.size() - 1;
-        System.out.println(index);
         arrayRepeat(stack);
     }
 

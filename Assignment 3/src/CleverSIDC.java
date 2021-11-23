@@ -27,7 +27,7 @@ public class CleverSIDC<K,V> {
 
     public void generate()
     {
-        
+
     }
 
 }

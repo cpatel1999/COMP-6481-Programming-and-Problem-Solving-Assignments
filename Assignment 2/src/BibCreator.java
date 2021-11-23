@@ -314,7 +314,7 @@ public class BibCreator {
     }
 
     /**
-     * Main method
+     * Main method handles all the operations of the application.
      *
      * @param args
      */
@@ -366,7 +366,7 @@ public class BibCreator {
             } catch (FileNotFoundException e) {
                 System.out.println("Could not open input file. File does not exist; possibly it could not be created!\n");
                 System.out.println("However, you will be allowed another chance to enter another file name.");
-                System.out.println("Please enter the name of one of the files that you need to review:");
+                //System.out.println("Please enter the name of one of the files that you need to review:");
                 try {
                     readFile(reader);
                 } catch (FileNotFoundException fileNotFoundException) {

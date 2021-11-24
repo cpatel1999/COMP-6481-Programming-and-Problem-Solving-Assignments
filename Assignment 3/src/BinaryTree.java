@@ -21,9 +21,9 @@ public class BinaryTree {
      * Inserts a node with the given value as left or right child of the given parent node. If the
      * chosen child already exists, the new node is inserted between the parent node and the child.
      *
-     * @param value the value of the node to be inserted
+     * @param value  the value of the node to be inserted
      * @param parent the parent under which to insert the new node
-     * @param side whether to insert the node as left or right child
+     * @param side   whether to insert the node as left or right child
      */
     public Node insertNode(int value, Node parent, Side side) {
         Node current = new Node(value);
@@ -101,7 +101,7 @@ public class BinaryTree {
         rightMostChildOfLeftTree.right = rightTree;
         rightTree.parent = rightMostChildOfLeftTree;
     }
-    
+
     public void setParentsChild(Node node, Node child) {
         if (node == root) {
             root = child;

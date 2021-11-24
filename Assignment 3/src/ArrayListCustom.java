@@ -1,6 +1,7 @@
 import java.util.Arrays;
+import java.util.List;
 
-class ArrayListCustom<E> {
+class ArrayListCustom<E>{
 
     // Define INITIAL_CAPACITY, size of elements of custom ArrayList
     private static final int INITIAL_CAPACITY = 100000000;

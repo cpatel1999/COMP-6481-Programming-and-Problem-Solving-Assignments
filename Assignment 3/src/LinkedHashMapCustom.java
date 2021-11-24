@@ -267,9 +267,20 @@ public class LinkedHashMapCustom<K,V> {
 
     }
 
+    public ArrayListCustom<K> keysReturn()
+    {
+        Entry<K,V> currentEntry = header;
+        ArrayListCustom<K> list = new ArrayListCustom<K>();
+        while(currentEntry != null)
+        {
+            list.add(currentEntry.key);
+            currentEntry = currentEntry.after;
+        }
+        return list;
+    }
 
     /**
-     * Method displays all key-value pairs present in CleverSIDC
+     * Method displays all key-value pairs present in LinkedHashMap.
      */
     public void display(){
 
@@ -317,6 +328,9 @@ public class LinkedHashMapCustom<K,V> {
         System.out.print("Displaying : ");
         linkedHashMapCustom.display();
 
+        System.out.println();
+
+        System.out.println(linkedHashMapCustom.get(2));
     }
 }
 

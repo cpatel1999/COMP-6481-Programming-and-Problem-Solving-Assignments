@@ -24,7 +24,7 @@ public class Driver {
         try {
             sc = new Scanner(new FileInputStream("NASTA_test_file1.txt"));
             pw = new PrintWriter(new FileOutputStream("output1.txt"), true);
-            while (sc.hasNextLine()) {
+            /*while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 if (!line.equals("")) {
                     key = Long.parseLong(line);
@@ -32,7 +32,17 @@ public class Driver {
                     cleverSIDC.add(key, value);
                     count++;
                 }
-            }
+            }*/
+
+            String line = sc.nextLine();
+            key = Long.parseLong(line);
+            value = random.nextInt(100000);
+            cleverSIDC.add(key, value);
+            count++;
+            cleverSIDC.display();
+            System.out.println(cleverSIDC.contains(key));
+            cleverSIDC.remove(key);
+            System.out.println(count);
         }
         catch(FileNotFoundException e) {
             System.out.println("Cannot find file");

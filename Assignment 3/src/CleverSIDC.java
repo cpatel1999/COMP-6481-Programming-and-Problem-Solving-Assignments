@@ -42,32 +42,33 @@ public class CleverSIDC<K, V> {
         return list;
     }
 
-    public void add(Long key, int value) {
+    public void add(long key, int value) {
         if (method_2 == 1) {
-            if (key != null) {
-                if (map.get(key) != null) {
-                    map.put(key, value);
-                } else {
-                    System.out.println("Key not found!!!!");
-                }
+            if (!map.containsKey(key)) {
+                map.put(key, value);
             } else {
-                throw new NullPointerException("Key value is null!!!!");
+                System.out.println("Key already exists!!!!");
             }
         }
     }
 
     public void remove(Long key) {
         if (method_2 == 1) {
-            if (key != null) {
-                if (map.get(key) != null) {
-                    map.remove(key);
-                } else {
-                    System.out.println("Key not found!!!!");
-                }
+            if (map.containsKey(key)) {
+                map.remove(key);
             } else {
-                throw new NullPointerException("Key value is null!!!!");
+                System.out.println("Key not found!!!!");
             }
         }
+    }
+
+    public boolean contains(long key)
+    {
+        return map.containsKey(key);
+    }
+    public void display()
+    {
+        map.display();
     }
 
     public void randomKeysGenerator() {

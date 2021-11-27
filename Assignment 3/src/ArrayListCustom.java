@@ -5,6 +5,7 @@ class ArrayListCustom<E>{
 
     // Define INITIAL_CAPACITY, size of elements of custom ArrayList
     private static final int INITIAL_CAPACITY = 100000000;
+
     private int size = 0;
     private Object elementData[] = {};
 
@@ -90,6 +91,35 @@ class ArrayListCustom<E>{
         for (int i = 0; i < size; i++) {
             System.out.print(elementData[i] + " ");
         }
+    }
+
+    /**
+     * Returns the size of the list.
+     *
+     * @return size of the list.
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * Returns the index of the specific element in the array list.
+     *
+     * @param key element required to be searched.
+     * @return index of the element.
+     */
+    public long indexOf(Object key)
+    {
+        int counter = 0;
+        for(int i = 0; i < elementData.length; i++)
+        {
+            if(elementData[i] == key)
+            {
+                return counter;
+            }
+            counter++;
+        }
+        return -1;
     }
 
     /**

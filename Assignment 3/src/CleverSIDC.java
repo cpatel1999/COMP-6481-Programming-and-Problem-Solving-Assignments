@@ -8,6 +8,7 @@ public class CleverSIDC<K, V> {
     public final static long KEY_LENGTH = 100000000;
     public int method_1 = 0, method_2 = 0;
     Random random = new Random();
+    ArrayListCustom<K> list;
     private LinkedHashMapCustom<Long, Integer> map;
 
     public CleverSIDC() {
@@ -37,7 +38,7 @@ public class CleverSIDC<K, V> {
     }
 
     public ArrayListCustom<K> allKeys() {
-        ArrayListCustom<K> list = (ArrayListCustom<K>) map.keysReturn();
+        list = (ArrayListCustom<K>) map.keysReturn();
 
         return list;
     }
@@ -62,12 +63,32 @@ public class CleverSIDC<K, V> {
         }
     }
 
-    public boolean contains(long key)
-    {
+    public int getValues(long key) {
+        if (map.get(key) != null) {
+            return map.get(key);
+        } else {
+            return -1;
+        }
+    }
+
+    public long nextKey(long key) {
+        if (map.find(key) != null) {
+            LinkedHashMapCustom.Entry<Long, Integer> temp = map.find(key);
+            if (temp.next != null) {
+                return temp.next.key;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
+
+    public boolean contains(long key) {
         return map.containsKey(key);
     }
-    public void display()
-    {
+
+    public void display() {
         map.display();
     }
 

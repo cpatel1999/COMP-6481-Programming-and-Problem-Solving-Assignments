@@ -245,6 +245,26 @@ public class LinkedHashMapCustom<K, V> {
         }
     }
 
+    public Entry<K,V> find(K key)
+    {
+        int hash = hash(key);
+        if(table[hash] == null)
+        {
+            return null;
+        }
+        else
+        {
+            Entry<K, V> temp = table[hash];
+            while (temp != null) {
+                if (temp.key.equals(key)) {
+                    return temp;
+                }
+                temp = temp.next;
+            }
+            return null;
+        }
+    }
+
     public boolean containsKey(K key) {
         int hash = hash(key);
         if (table[hash] == null) {

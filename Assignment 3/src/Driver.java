@@ -56,21 +56,23 @@ public class Driver {
             long retNextKey = cleverSIDC.nextKey(33240013);
             if (retNextKey == -1) {
                 System.out.println("No next key...");
+            } else if (retNextKey == 0) {
+                System.out.println("Key doesn't exists...");
             } else {
                 System.out.println(retNextKey);
             }
 
-            /*String line = sc.nextLine();
-            key = Long.parseLong(line);
-            value = random.nextInt(100000);
-            cleverSIDC.add(key, value);
-            count++;
-            cleverSIDC.display();
-            System.out.println(cleverSIDC.contains(key));
-            cleverSIDC.remove(key);
-            count--;
-            System.out.println(count);
-            System.out.println(cleverSIDC.contains(key));*/
+            long retPrevKey = cleverSIDC.prevKey(33255593);
+            if(retPrevKey == -1)
+            {
+                System.out.println("No previous key...");
+            }
+            else if(retPrevKey == 0) {
+                System.out.println("Key doesn't exists...");
+            } else {
+                System.out.println(retPrevKey);
+            }
+
         } catch (FileNotFoundException e) {
             System.out.println("Cannot find file");
         }

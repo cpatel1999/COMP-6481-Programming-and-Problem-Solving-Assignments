@@ -110,14 +110,18 @@ class ArrayListCustom<E>{
      */
     public long indexOf(Object key)
     {
-        int counter = 0;
+        int index = 0;
+        //System.out.println(elementData.length);
         for(int i = 0; i < elementData.length; i++)
         {
+            System.out.println(elementData[i]);
             if(elementData[i] == key)
             {
-                return counter;
+                System.out.println(index);
+                return index;
             }
-            counter++;
+            //System.out.println(index);
+            index++;
         }
         return -1;
     }

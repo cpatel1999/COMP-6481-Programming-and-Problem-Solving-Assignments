@@ -8,7 +8,7 @@ public class CleverSIDC<K, V> {
     public final static long KEY_LENGTH = 100000000;
     public int method_1 = 0, method_2 = 0;
     Random random = new Random();
-    ArrayListCustom<K> list;
+    ArrayListCustom<Long> list;
     private LinkedHashMapCustom<Long, Integer> map;
 
     public CleverSIDC() {
@@ -37,8 +37,8 @@ public class CleverSIDC<K, V> {
         map.put(randomKey, randomValue);
     }
 
-    public ArrayListCustom<K> allKeys() {
-        list = (ArrayListCustom<K>) map.keysReturn();
+    public ArrayListCustom<Long> allKeys() {
+        list = map.keysReturn();
 
         return list;
     }
@@ -77,10 +77,36 @@ public class CleverSIDC<K, V> {
             if (temp.next != null) {
                 return temp.next.key;
             } else {
-                return -1;
+                return 0;
             }
         } else {
             return -1;
+        }
+    }
+
+    public long prevKey(long key) {
+        ArrayListCustom keyList = map.keysReturn();
+        int i = 0;
+        int flag = 0;
+        while(i < keyList.getSize())
+        {
+            if((Long)keyList.get(i) == key)
+            {
+                flag = 1;
+                break;
+            }
+            i++;
+        }
+        if(flag == 1 && i != 0) {
+            return (Long) keyList.get(i-1);
+        }
+        else if(flag == 1 && i == 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
         }
     }
 

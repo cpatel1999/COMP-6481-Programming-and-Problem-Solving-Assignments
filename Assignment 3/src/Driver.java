@@ -73,6 +73,8 @@ public class Driver {
                 System.out.println(retPrevKey);
             }
 
+            System.out.println(cleverSIDC.rangeKey(33240013,33255593));
+
         } catch (FileNotFoundException e) {
             System.out.println("Cannot find file");
         }

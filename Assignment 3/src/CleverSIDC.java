@@ -88,26 +88,41 @@ public class CleverSIDC<K, V> {
         ArrayListCustom keyList = map.keysReturn();
         int i = 0;
         int flag = 0;
-        while(i < keyList.getSize())
-        {
-            if((Long)keyList.get(i) == key)
-            {
+        while (i < keyList.getSize()) {
+            if ((Long) keyList.get(i) == key) {
                 flag = 1;
                 break;
             }
             i++;
         }
-        if(flag == 1 && i != 0) {
-            return (Long) keyList.get(i-1);
-        }
-        else if(flag == 1 && i == 0)
-        {
+        if (flag == 1 && i != 0) {
+            return (Long) keyList.get(i - 1);
+        } else if (flag == 1 && i == 0) {
             return -1;
-        }
-        else
-        {
+        } else {
             return 0;
         }
+    }
+
+    public int rangeKey(long key1, long key2) {
+        ArrayListCustom keyList = map.keysReturn();
+        int i = 0;
+        long max, min;
+        int counter = 0;
+        if (key1 < key2) {
+            min = key1;
+            max = key2;
+        } else {
+            min = key2;
+            max = key1;
+        }
+        while (i < keyList.getSize()) {
+            if ((Long) keyList.get(i) > min && (Long) keyList.get(i) < max) {
+                counter++;
+            }
+            i++;
+        }
+        return counter;
     }
 
     public boolean contains(long key) {

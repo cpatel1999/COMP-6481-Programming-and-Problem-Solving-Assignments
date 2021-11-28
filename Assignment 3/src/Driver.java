@@ -10,6 +10,8 @@ public class Driver {
     public static void main(String args[]) {
         CleverSIDC<Long, Integer> cleverSIDC = new CleverSIDC<Long, Integer>();
         cleverSIDC.setSIDCThreshold(99);
+        System.out.println(cleverSIDC.method_1);
+        System.out.println(cleverSIDC.method_2);
 
         Scanner sc = null;
         PrintWriter pw = null;
@@ -41,16 +43,16 @@ public class Driver {
                 pw.println(list.get(i));
             }
 
-/*
+
             // Values corresponding to given key.
-            int ret = cleverSIDC.getValues(33256987);
+            int ret = cleverSIDC.getValues(26324890);
             if (ret == -1) {
                 System.out.println("Key not present...");
             } else {
                 System.out.println(ret);
             }
 
-            long retNextKey = cleverSIDC.nextKey(33240013);
+            long retNextKey = cleverSIDC.nextKey(35967681);
             if (retNextKey == -1) {
                 System.out.println("No next key...");
             } else if (retNextKey == 0) {
@@ -59,7 +61,7 @@ public class Driver {
                 System.out.println(retNextKey);
             }
 
-            long retPrevKey = cleverSIDC.prevKey(33255593);
+            long retPrevKey = cleverSIDC.prevKey(35967681);
             if(retPrevKey == -1)
             {
                 System.out.println("No previous key...");
@@ -71,7 +73,7 @@ public class Driver {
             }
 
             System.out.println(cleverSIDC.rangeKey(33240013,33255593));
-*/
+
         } catch (FileNotFoundException e) {
             System.out.println("Cannot find file");
         }

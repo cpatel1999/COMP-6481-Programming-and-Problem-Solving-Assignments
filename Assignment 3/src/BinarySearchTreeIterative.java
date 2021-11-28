@@ -1,6 +1,7 @@
 public class BinarySearchTreeIterative extends BaseBinaryTree implements BinarySearchTree {
 
     ArrayListCustom<Long> list = new ArrayListCustom<Long>();
+
     @Override
     public Node searchNode(long key) {
         Node node = root;
@@ -27,10 +28,8 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
      *
      * @param node Root node.
      */
-    public void keysReturn(Node node)
-    {
-        if(node == null)
-        {
+    public void keysReturn(Node node) {
+        if (node == null) {
             return;
         }
         keysReturn(node.left);
@@ -40,10 +39,11 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
 
     @Override
     public void insertNode(long key, int value) {
-        Node newNode = new Node(key,value);
+        Node newNode = new Node(key, value);
 
         if (root == null) {
             root = newNode;
+            root.parent = null;
             return;
         }
 
@@ -54,6 +54,7 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
                     node = node.left;
                 } else {
                     node.left = newNode;
+                    newNode.parent = node;
                     return;
                 }
             } else if (key > node.data) {
@@ -61,6 +62,7 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
                     node = node.right;
                 } else {
                     node.right = newNode;
+                    newNode.parent = node;
                     return;
                 }
             } else {
@@ -71,49 +73,50 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
 
     @Override
     public void deleteNode(long key) {
-    Node node = root;
-    Node parent = null;
+        Node node = root;
+        Node parentNode = null;
 
-    // Find the node to be deleted
-    while (node != null && node.data != key) {
-        // Traverse the tree to the left or right depending on the key
-        parent = node;
-        if (key < node.data) {
-            node = node.left;
-        } else {
-            node = node.right;
+        // Find the node to be deleted
+        while (node != null && node.data != key) {
+            // Traverse the tree to the left or right depending on the key
+            parentNode = node;
+            if (key < node.data) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+
+        // Node not found?
+        if (node == null) {
+            return;
+        }
+
+        // At this point, "node" is the node to be deleted
+
+        // Node has at most one child --> replace node by its single child
+        if (node.left == null || node.right == null) {
+            deleteNodeWithZeroOrOneChild(key, node, parentNode);
+        }
+
+        // Node has two children
+        else {
+            deleteNodeWithTwoChildren(node);
         }
     }
 
-    // Node not found?
-    if (node == null) {
-        return;
-    }
 
-    // At this point, "node" is the node to be deleted
-
-    // Node has at most one child --> replace node by its single child
-    if (node.left == null || node.right == null) {
-        deleteNodeWithZeroOrOneChild(key, node, parent);
-    }
-
-    // Node has two children
-    else {
-        deleteNodeWithTwoChildren(node);
-    }
-}
-
-
-
-    private void deleteNodeWithZeroOrOneChild(long key, Node node, Node parent) {
+    private void deleteNodeWithZeroOrOneChild(long key, Node node, Node parentNode) {
         Node singleChild = node.left != null ? node.left : node.right;
-
         if (node == root) {
             root = singleChild;
-        } else if (key < parent.data) {
-            parent.left = singleChild;
+            singleChild.parent = null;
+        } else if (key < parentNode.data) {
+            parentNode.left = singleChild;
+            singleChild.parent = parentNode;
         } else {
-            parent.right = singleChild;
+            parentNode.right = singleChild;
+            singleChild.parent = parentNode;
         }
     }
 
@@ -135,6 +138,8 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
         if (inOrderSuccessor == node.right) {
             // --> Replace right child with inorder successor's right child
             node.right = inOrderSuccessor.right;
+            // Set node as inorder successor's right child's parent
+            inOrderSuccessor.right.parent = node;
         }
 
         // Case b) Inorder successor is further down, meaning, it's a left child
@@ -142,6 +147,23 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
             // --> Replace inorder successor's parent's left child
             //     with inorder successor's right child
             inOrderSuccessorParent.left = inOrderSuccessor.right;
+            // set inOrderSuccessorParent as inorder successor's right child's parent
+            inOrderSuccessor.right.parent = inOrderSuccessorParent;
         }
+    }
+
+    @Override
+    public int getValue(long key) {
+        Node node = root;
+        while (node != null) {
+            if (node.data == key) {
+                return node.value;
+            } else if (key < node.data) {
+                node = node.left;
+            } else if (key > node.data) {
+                node = node.right;
+            }
+        }
+        return -1;
     }
 }

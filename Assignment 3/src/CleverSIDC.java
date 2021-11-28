@@ -1,8 +1,14 @@
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * 
+ * @param <K>
+ * @param <V>
+ *
+ * @author CHARIT
+ */
 public class CleverSIDC<K, V> {
 
     public final static long KEY_LENGTH = 100000000;
@@ -87,48 +93,96 @@ public class CleverSIDC<K, V> {
     }
 
     public int getValues(long key) {
-        if (map.get(key) != null) {
-            return map.get(key);
+        if (method_1 == 1) {
+            if (bst.searchNode(key) != null) {
+                return bst.getValue(key);
+            } else {
+                return -1;
+            }
+        } else if (method_2 == 1) {
+            int value = map.get(key);
+            if (map.get(key) != null) {
+                return value;
+            } else {
+                return -1;
+            }
         } else {
             return -1;
         }
     }
 
     public long nextKey(long key) {
-        if (map.find(key) != null) {
+        if (method_1 == 1) {
+            Node node;
+            node = bst.searchNode(key);
+            if (node != null) {
+                if (node.left == null && node.right == null) {
+                    return -1;
+                } else if (node.left == null) {
+                    return node.right.data;
+                } else if (node.right == null) {
+                    return node.left.data;
+                } else {
+                    // We can return key from the left or right node. But here I have returned a key stored in the right node
+                    return node.right.data;
+                }
+            } else {
+                return 0;
+            }
+        } else if (method_2 == 1) {
             LinkedHashMapCustom.Entry<Long, Integer> temp = map.find(key);
-            if (temp.next != null) {
-                return temp.next.key;
+            if (temp != null) {
+                if (temp.next != null) {
+                    return temp.next.key;
+                } else {
+                    return -1;
+                }
             } else {
                 return 0;
             }
         } else {
-            return -1;
+            return 0;
         }
     }
 
     public long prevKey(long key) {
-        ArrayListCustom keyList = map.keysReturn();
-        int i = 0;
-        int flag = 0;
-        while (i < keyList.getSize()) {
-            if ((Long) keyList.get(i) == key) {
-                flag = 1;
-                break;
+        if (method_1 == 1) {
+            Node node;
+            node = bst.searchNode(key);
+            if (node != null) {
+                if (node.parent == null) {
+                    return -1;
+                } else {
+                    return node.parent.data;
+                }
+            } else {
+                return 0;
             }
-            i++;
-        }
-        if (flag == 1 && i != 0) {
-            return (Long) keyList.get(i - 1);
-        } else if (flag == 1 && i == 0) {
-            return -1;
+        } else if (method_2 == 1) {
+            ArrayListCustom keyList = map.keysReturn();
+            int i = 0;
+            int flag = 0;
+            while (i < keyList.getSize()) {
+                if ((Long) keyList.get(i) == key) {
+                    flag = 1;
+                    break;
+                }
+                i++;
+            }
+            if (flag == 1 && i != 0) {
+                return (Long) keyList.get(i - 1);
+            } else if (flag == 1 && i == 0) {
+                return -1;
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
     }
 
     public int rangeKey(long key1, long key2) {
-        ArrayListCustom keyList = map.keysReturn();
+        ArrayListCustom keyList = null;
         int i = 0;
         long max, min;
         int counter = 0;
@@ -138,6 +192,14 @@ public class CleverSIDC<K, V> {
         } else {
             min = key2;
             max = key1;
+        }
+
+        if(method_1 == 1)
+        {
+            keyList = bst.keysReturn();
+        }
+        else if(method_2 == 1) {
+            keyList = map.keysReturn();
         }
         while (i < keyList.getSize()) {
             if ((Long) keyList.get(i) > min && (Long) keyList.get(i) < max) {
@@ -163,10 +225,4 @@ public class CleverSIDC<K, V> {
         }
         Collections.shuffle((List<?>) arrayListCustom);
     }
-
-   /* public static void main(String[] args)
-    {
-        CleverSIDC c = new CleverSIDC();
-        System.out.println(ThreadLocalRandom.current().nextLong(100000000));
-    }*/
 }

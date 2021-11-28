@@ -33,4 +33,12 @@ public interface BinarySearchTree {
      * @return list of keys.
      */
     ArrayListCustom<Long> keysReturn();
+
+    /**
+     * Returns the value associated with the key.
+     *
+     * @param key Key required to be searched.
+     * @return Value assigned to the key.
+     */
+    int getValue(long key);
 }

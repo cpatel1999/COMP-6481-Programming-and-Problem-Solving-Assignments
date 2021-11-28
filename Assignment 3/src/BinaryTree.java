@@ -102,6 +102,7 @@ public class BinaryTree {
         rightTree.parent = rightMostChildOfLeftTree;
     }
 
+
     public void setParentsChild(Node node, Node child) {
         if (node == root) {
             root = child;

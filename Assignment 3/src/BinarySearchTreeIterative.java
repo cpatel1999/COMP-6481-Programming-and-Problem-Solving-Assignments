@@ -1,7 +1,8 @@
 public class BinarySearchTreeIterative extends BaseBinaryTree implements BinarySearchTree {
 
+    ArrayListCustom<Long> list = new ArrayListCustom<Long>();
     @Override
-    public Node searchNode(int key) {
+    public Node searchNode(long key) {
         Node node = root;
         while (node != null) {
             if (node.data == key) {
@@ -16,8 +17,30 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
     }
 
     @Override
-    public void insertNode(int key) {
-        Node newNode = new Node(key);
+    public ArrayListCustom<Long> keysReturn() {
+        keysReturn(root);
+        return list;
+    }
+
+    /**
+     * Recursive inorder traversal of BST. It traverses the tree in left-->root-->right order.
+     *
+     * @param node Root node.
+     */
+    public void keysReturn(Node node)
+    {
+        if(node == null)
+        {
+            return;
+        }
+        keysReturn(node.left);
+        list.add(node.data);
+        keysReturn(node.right);
+    }
+
+    @Override
+    public void insertNode(long key, int value) {
+        Node newNode = new Node(key,value);
 
         if (root == null) {
             root = newNode;
@@ -47,7 +70,7 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
     }
 
     @Override
-    public void deleteNode(int key) {
+    public void deleteNode(long key) {
     Node node = root;
     Node parent = null;
 
@@ -80,7 +103,9 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
     }
 }
 
-    private void deleteNodeWithZeroOrOneChild(int key, Node node, Node parent) {
+
+
+    private void deleteNodeWithZeroOrOneChild(long key, Node node, Node parent) {
         Node singleChild = node.left != null ? node.left : node.right;
 
         if (node == root) {

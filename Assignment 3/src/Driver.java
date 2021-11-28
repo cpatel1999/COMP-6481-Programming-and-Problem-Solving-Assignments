@@ -9,9 +9,7 @@ public class Driver {
 
     public static void main(String args[]) {
         CleverSIDC<Long, Integer> cleverSIDC = new CleverSIDC<Long, Integer>();
-        cleverSIDC.setSIDCThreshold(6000);
-        //System.out.println(cleverSIDC.method_1);
-        //System.out.println(cleverSIDC.method_2);
+        cleverSIDC.setSIDCThreshold(99);
 
         Scanner sc = null;
         PrintWriter pw = null;
@@ -30,7 +28,6 @@ public class Driver {
                     value = random.nextInt(100000);
                     cleverSIDC.add(key, value);
                     count++;
-                    //System.out.println(count);
                 }
             }
             pw.println("Total " + count + " keys are present in the file");
@@ -44,7 +41,7 @@ public class Driver {
                 pw.println(list.get(i));
             }
 
-
+/*
             // Values corresponding to given key.
             int ret = cleverSIDC.getValues(33256987);
             if (ret == -1) {
@@ -74,7 +71,7 @@ public class Driver {
             }
 
             System.out.println(cleverSIDC.rangeKey(33240013,33255593));
-
+*/
         } catch (FileNotFoundException e) {
             System.out.println("Cannot find file");
         }

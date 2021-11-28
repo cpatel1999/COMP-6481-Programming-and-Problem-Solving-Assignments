@@ -5,9 +5,11 @@
  */
 public class Node {
 
-    int data; //Data stored in the Node.
+    long data; //Data stored in the Node.
+    int value;
     Node left;
     Node right;
+
     Node parent;
     int height;
 
@@ -16,16 +18,8 @@ public class Node {
      *
      * @param data the data to store in the node
      */
-    public Node(int data) {
+    public Node(long data, int value) {
         this.data = data;
-    }
-
-    /**
-     * Returns the value stored in the Node.
-     *
-     * @return value stored in the Node.
-     */
-    public int getData() {
-        return data;
+        this.value = value;
     }
 }

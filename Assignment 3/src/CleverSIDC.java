@@ -7,21 +7,20 @@ public class CleverSIDC<K, V> {
 
     public final static long KEY_LENGTH = 100000000;
     public int method_1 = 0, method_2 = 0;
-    Random random = new Random();
     ArrayListCustom<Long> list;
     private LinkedHashMapCustom<Long, Integer> map;
+    private BinarySearchTreeIterative bst;
 
     public CleverSIDC() {
         map = new LinkedHashMapCustom<Long, Integer>();
+        bst = new BinarySearchTreeIterative();
     }
 
     public void setSIDCThreshold(long size) {
         if (size > 0 && size < 100) {
             method_1 = 1;
-            //randomKeysGenerator();
         } else if (size >= 100 && size <= 500000) {
             method_2 = 1;
-            //randomKeysGenerator();
         } else {
             System.out.println("Threshold is very high!!!!");
             return;
@@ -30,21 +29,39 @@ public class CleverSIDC<K, V> {
 
     public void generate() {
         Long randomKey = ThreadLocalRandom.current().nextLong(100000000);
-        while (map.get(randomKey) != null) {
-            randomKey = ThreadLocalRandom.current().nextLong(100000000);
+        if (method_2 == 1) {
+            while (bst.searchNode(randomKey) != null) {
+                randomKey = ThreadLocalRandom.current().nextLong(100000000);
+            }
+            int randomValue = ThreadLocalRandom.current().nextInt(1000000);
+            bst.insertNode(randomKey, randomValue);
+        } else if (method_2 == 1) {
+            while (map.get(randomKey) != null) {
+                randomKey = ThreadLocalRandom.current().nextLong(100000000);
+            }
+            int randomValue = ThreadLocalRandom.current().nextInt(1000000);
+            map.put(randomKey, randomValue);
         }
-        int randomValue = ThreadLocalRandom.current().nextInt(1000000);
-        map.put(randomKey, randomValue);
     }
 
     public ArrayListCustom<Long> allKeys() {
-        list = map.keysReturn();
+        if (method_1 == 1) {
+            list = bst.keysReturn();
+        } else if (method_2 == 1) {
+            list = map.keysReturn();
+        }
 
         return list;
     }
 
     public void add(long key, int value) {
-        if (method_2 == 1) {
+        if (method_1 == 1) {
+            if (bst.searchNode(key) == null) {
+                bst.insertNode(key, value);
+            } else {
+                System.out.println("Key already exists!!!!");
+            }
+        } else if (method_2 == 1) {
             if (!map.containsKey(key)) {
                 map.put(key, value);
             } else {
@@ -54,7 +71,13 @@ public class CleverSIDC<K, V> {
     }
 
     public void remove(Long key) {
-        if (method_2 == 1) {
+        if (method_1 == 1) {
+            if (bst.searchNode(key) != null) {
+                bst.deleteNode(key);
+            } else {
+                System.out.println("Key not found!!!!");
+            }
+        } else if (method_2 == 1) {
             if (map.containsKey(key)) {
                 map.remove(key);
             } else {

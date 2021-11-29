@@ -1,3 +1,11 @@
+/**
+ * Assignment 3 - Part 2
+ * Written by: Charit Pareshbhai Patel (40160658)
+ * <p>
+ * An iterative binary search tree implementation with <code>long</code> keys.
+ *
+ * @author CHARIT
+ */
 public class BinarySearchTreeIterative extends BaseBinaryTree implements BinarySearchTree {
 
     ArrayListCustom<Long> list = new ArrayListCustom<Long>();
@@ -49,18 +57,23 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
 
         Node node = root;
         while (true) {
+            // Traverse the tree to the left or right depending on the key
             if (key < node.data) {
                 if (node.left != null) {
+                    // Left sub-tree exists --> follow
                     node = node.left;
                 } else {
+                    // Left sub-tree does not exist --> insert new node as left child and set parent
                     node.left = newNode;
                     newNode.parent = node;
                     return;
                 }
             } else if (key > node.data) {
                 if (node.right != null) {
+                    // Right sub-tree exists --> follow
                     node = node.right;
                 } else {
+                    // Right sub-tree does not exist --> insert new node as right child and set parent
                     node.right = newNode;
                     newNode.parent = node;
                     return;
@@ -106,6 +119,13 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
     }
 
 
+    /**
+     * Deletes the node having either zero or one child.
+     *
+     * @param key        Key of the node
+     * @param node       Node reference
+     * @param parentNode Parent node reference
+     */
     private void deleteNodeWithZeroOrOneChild(long key, Node node, Node parentNode) {
         Node singleChild = node.left != null ? node.left : node.right;
         if (node == root) {
@@ -120,6 +140,11 @@ public class BinarySearchTreeIterative extends BaseBinaryTree implements BinaryS
         }
     }
 
+    /**
+     * Deletes the node having two children.
+     *
+     * @param node Node reference
+     */
     private void deleteNodeWithTwoChildren(Node node) {
         // Find minimum node of right subtree ("inorder successor" of current node)
         Node inOrderSuccessor = node.right;

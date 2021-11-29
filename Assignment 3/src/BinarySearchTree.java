@@ -1,4 +1,7 @@
 /**
+ * Assignment 3 - Part 2
+ * Written by: Charit Pareshbhai Patel (40160658)
+ * <p>
  * Interface for various BST implementations.
  *
  * @author CHARIT

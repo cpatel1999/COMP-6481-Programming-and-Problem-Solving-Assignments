@@ -1,7 +1,16 @@
 import java.util.Arrays;
-import java.util.List;
 
-class ArrayListCustom<E>{
+/**
+ * Assignment 3 - Part 2
+ * Written by: Charit Pareshbhai Patel (40160658)
+ * <p>
+ * Custom implementation of ArrayList class.
+ * It defines all the basic methods of ArrayList class.
+ *
+ * @param <E> Generic parameter to determine the type of data stored in the arraylist.
+ * @author CHARIT
+ */
+class ArrayListCustom<E> {
 
     // Define INITIAL_CAPACITY, size of elements of custom ArrayList
     private static final int INITIAL_CAPACITY = 100000000;
@@ -108,15 +117,12 @@ class ArrayListCustom<E>{
      * @param key element required to be searched.
      * @return index of the element.
      */
-    public long indexOf(Object key)
-    {
+    public long indexOf(Object key) {
         int index = 0;
         //System.out.println(elementData.length);
-        for(int i = 0; i < elementData.length; i++)
-        {
+        for (int i = 0; i < elementData.length; i++) {
             System.out.println(elementData[i]);
-            if(elementData[i] == key)
-            {
+            if (elementData[i] == key) {
                 System.out.println(index);
                 return index;
             }
@@ -124,39 +130,6 @@ class ArrayListCustom<E>{
             index++;
         }
         return -1;
-    }
-
-    /**
-     * Main method to test ArrayListCustom functionality.
-     */
-    public static void main(String... a) {
-        ArrayListCustom<Integer> list = new ArrayListCustom<Integer>();
-        //Add elements in custom ArrayList
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(1);
-        list.add(2);
-
-        //Display custom ArrayList
-        list.display();
-        System.out.println("\nelement at index in custom ArrayList > " + 1 + " = " + list.get(1));
-
-        //Remove element from custom ArrayList
-        System.out.println("element removed from index " + 1 + " = "
-                + list.remove(1));
-
-        //Again display custom ArrayList
-        System.out
-                .println("\nlet's display custom ArrayList again after removal at index 1");
-
-        list.display();
-
-        // list.remove(11); //will throw IndexOutOfBoundsException, because
-        // there is no element to remove on index 11.
-        // list.get(11); //will throw IndexOutOfBoundsException, because there
-        // is no element to get on index 11.
     }
 }
 

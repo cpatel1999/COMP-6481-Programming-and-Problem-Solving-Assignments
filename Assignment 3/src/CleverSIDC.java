@@ -1,16 +1,18 @@
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * Assignment 3 - Part 2
+ * Written by: Charit Pareshbhai Patel (40160658)
+ * <p>
+ * <p>
  * CleverSIDC is an ADT class.
  * Keys of CleverSIDC entries are long integers of 8 digits,
  * and one can retrieve the keys/values of an CleverSIDC or access a single element by its key.
- *
+ * <p>
  * CleverSIDC ADT, which automatically adapts to the dynamic content that it operates on.
  * In other words, it accepts the size (total number of students, n, identified by their 8 digits SIDC number as a key) as a parameter
  * and uses an appropriate (set of) data structure(s),
- *
+ * <p>
  * Depending upon the data structure, it calls the appropriate method from the list of methods defined in the data structure class.
  *
  * @author CHARIT
@@ -18,23 +20,22 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CleverSIDC {
 
     public final static long KEY_LENGTH = 100000000; // Final variable to define the length of key, here 8-digits.
-
+    private static int wrongKeyCount = 0;
     public int method_1 = 0, method_2 = 0; // Used to select data structure.
     ArrayListCustom<Long> list; //Holds arraylist, created manually from scratch.
     private LinkedHashMapCustom<Long, Integer> map; //Holds LinkedHashMap, created manually from scratch.
     private BinarySearchTreeIterative bst; //Holds Binary Search Tree (BST), created manually from scratch.
 
-    public static int getWrongKeyCount() {
-        return wrongKeyCount;
-    }
-
-    private static int wrongKeyCount = 0;
     /**
      * Default constructor to create data structures.
      */
     public CleverSIDC() {
         map = new LinkedHashMapCustom<Long, Integer>();
         bst = new BinarySearchTreeIterative();
+    }
+
+    public static int getWrongKeyCount() {
+        return wrongKeyCount;
     }
 
     /**
@@ -95,7 +96,7 @@ public class CleverSIDC {
      * Inserts the <key,value> pair in the data structure.
      * Inserted only when the key is not present, Otherwise displays en error message.
      *
-     * @param key Key having 8-digits.
+     * @param key   Key having 8-digits.
      * @param value value corresponding to the key.
      */
     public void add(long key, int value) {
@@ -258,11 +259,9 @@ public class CleverSIDC {
             max = key1;
         }
 
-        if(method_1 == 1)
-        {
+        if (method_1 == 1) {
             keyList = bst.keysReturn(); //List of keys available in BST.
-        }
-        else if(method_2 == 1) {
+        } else if (method_2 == 1) {
             keyList = map.keysReturn(); //List of keys available in map.
         }
         while (i < keyList.getSize()) { //Iterate key list.

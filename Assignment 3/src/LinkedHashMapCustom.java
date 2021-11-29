@@ -245,15 +245,11 @@ public class LinkedHashMapCustom<K, V> {
         }
     }
 
-    public Entry<K,V> find(K key)
-    {
+    public Entry<K, V> find(K key) {
         int hash = hash(key);
-        if(table[hash] == null)
-        {
+        if (table[hash] == null) {
             return null;
-        }
-        else
-        {
+        } else {
             Entry<K, V> temp = table[hash];
             while (temp != null) {
                 if (temp.key.equals(key)) {
@@ -311,9 +307,13 @@ public class LinkedHashMapCustom<K, V> {
             }
             return false;
         }
-
     }
 
+    /**
+     * Returns the list of all the keys available in the map.
+     *
+     * @return list of all keys.
+     */
     public ArrayListCustom<K> keysReturn() {
         Entry<K, V> currentEntry = header;
         ArrayListCustom<K> list = new ArrayListCustom<K>();
@@ -343,18 +343,31 @@ public class LinkedHashMapCustom<K, V> {
      * This is very important method, as performance of HashMapCustom is very much
      * dependent on this method's implementation.
      *
-     * @param key
+     * @param key Key
      */
     private int hash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 
+    /**
+     * Entry class (static inner class) to define each entry
+     *
+     * @param <K> Key
+     * @param <V> Value
+     */
     static class Entry<K, V> {
         K key;
         V value;
         Entry<K, V> next;
         Entry<K, V> before, after;
 
+        /**
+         * Parameterized Constructor to initialize data.
+         *
+         * @param key   Key
+         * @param value Value
+         * @param next  Next <key,value> pair address
+         */
         public Entry(K key, V value, Entry<K, V> next) {
             this.key = key;
             this.value = value;
@@ -362,4 +375,3 @@ public class LinkedHashMapCustom<K, V> {
         }
     }
 }
-

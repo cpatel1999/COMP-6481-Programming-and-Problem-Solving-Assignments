@@ -2,6 +2,9 @@ public class BinaryTree {
     public Node root;
 
     /**
+     * Assignment 3 - Part 2
+     * Written by: Charit Pareshbhai Patel (40160658)
+     * <p>
      * Inserts a node with the given value at the root. If the root has children, these will be moved
      * to the node to be inserted.
      *

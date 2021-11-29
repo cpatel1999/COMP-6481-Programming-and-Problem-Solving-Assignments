@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Driver {
 
     public static void main(String args[]) {
-        CleverSIDC<Long, Integer> cleverSIDC = new CleverSIDC<Long, Integer>();
+        CleverSIDC cleverSIDC = new CleverSIDC();
         cleverSIDC.setSIDCThreshold(99);
         System.out.println(cleverSIDC.method_1);
         System.out.println(cleverSIDC.method_2);
@@ -21,7 +21,7 @@ public class Driver {
         int count = 0; //counter
         Random random = new Random();
         try {
-            sc = new Scanner(new FileInputStream("NASTA_test_file1.txt"));
+            sc = new Scanner(new FileInputStream("NASTA_test_file3.txt"));
             pw = new PrintWriter(new FileOutputStream("output1.txt"), true);
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
@@ -35,7 +35,7 @@ public class Driver {
             pw.println("Total " + count + " keys are present in the file");
             pw.println();
 
-
+            System.out.println(cleverSIDC.getWrongKeyCount());
             // All keys in sorted order
             System.out.println("All keys in sorted order: ");
             ArrayListCustom<Long> list = cleverSIDC.allKeys();

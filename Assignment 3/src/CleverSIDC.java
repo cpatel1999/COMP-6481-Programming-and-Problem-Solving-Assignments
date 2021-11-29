@@ -3,25 +3,47 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * 
- * @param <K>
- * @param <V>
+ * CleverSIDC is an ADT class.
+ * Keys of CleverSIDC entries are long integers of 8 digits,
+ * and one can retrieve the keys/values of an CleverSIDC or access a single element by its key.
+ *
+ * CleverSIDC ADT, which automatically adapts to the dynamic content that it operates on.
+ * In other words, it accepts the size (total number of students, n, identified by their 8 digits SIDC number as a key) as a parameter
+ * and uses an appropriate (set of) data structure(s),
+ *
+ * Depending upon the data structure, it calls the appropriate method from the list of methods defined in the data structure class.
  *
  * @author CHARIT
  */
-public class CleverSIDC<K, V> {
+public class CleverSIDC {
 
-    public final static long KEY_LENGTH = 100000000;
-    public int method_1 = 0, method_2 = 0;
-    ArrayListCustom<Long> list;
-    private LinkedHashMapCustom<Long, Integer> map;
-    private BinarySearchTreeIterative bst;
+    public final static long KEY_LENGTH = 100000000; // Final variable to define the length of key, here 8-digits.
 
+    public int method_1 = 0, method_2 = 0; // Used to select data structure.
+    ArrayListCustom<Long> list; //Holds arraylist, created manually from scratch.
+    private LinkedHashMapCustom<Long, Integer> map; //Holds LinkedHashMap, created manually from scratch.
+    private BinarySearchTreeIterative bst; //Holds Binary Search Tree (BST), created manually from scratch.
+
+    public static int getWrongKeyCount() {
+        return wrongKeyCount;
+    }
+
+    private static int wrongKeyCount = 0;
+    /**
+     * Default constructor to create data structures.
+     */
     public CleverSIDC() {
         map = new LinkedHashMapCustom<Long, Integer>();
         bst = new BinarySearchTreeIterative();
     }
 
+    /**
+     * Sets the threshold value.
+     * Depending upon the threshold value, it initializes the variable.
+     * This variable is used to determine which data structure is used to store the data and perform the required operations.
+     *
+     * @param size Threshold value
+     */
     public void setSIDCThreshold(long size) {
         if (size > 0 && size < 100) {
             method_1 = 1;
@@ -33,49 +55,73 @@ public class CleverSIDC<K, V> {
         }
     }
 
+    /**
+     * Generates random unique key and random value.
+     * If key is already present in the data structure, then it generates again until the generated key is not present.
+     * And it stores the <key,value> pair in an appropriate data structure.
+     */
     public void generate() {
         Long randomKey = ThreadLocalRandom.current().nextLong(100000000);
         if (method_2 == 1) {
-            while (bst.searchNode(randomKey) != null) {
-                randomKey = ThreadLocalRandom.current().nextLong(100000000);
+            while (bst.searchNode(randomKey) != null) {  // Checks if the key is already present or not.
+                randomKey = ThreadLocalRandom.current().nextLong(100000000); // If present, then generates again.
             }
             int randomValue = ThreadLocalRandom.current().nextInt(1000000);
-            bst.insertNode(randomKey, randomValue);
+            bst.insertNode(randomKey, randomValue); // Inserts the <key,value> pair in the selected data structure.
         } else if (method_2 == 1) {
-            while (map.get(randomKey) != null) {
-                randomKey = ThreadLocalRandom.current().nextLong(100000000);
+            while (map.get(randomKey) != null) {  // Checks if the key is already present or not.
+                randomKey = ThreadLocalRandom.current().nextLong(100000000); // If present, then generates again.
             }
             int randomValue = ThreadLocalRandom.current().nextInt(1000000);
-            map.put(randomKey, randomValue);
+            map.put(randomKey, randomValue); // Inserts the <key,value> pair in the selected data structure.
         }
     }
 
+    /**
+     * Returns the sorted list of keys present in the data structure.
+     *
+     * @return Sorted list of keys.
+     */
     public ArrayListCustom<Long> allKeys() {
         if (method_1 == 1) {
             list = bst.keysReturn();
         } else if (method_2 == 1) {
             list = map.keysReturn();
         }
-
         return list;
     }
 
+    /**
+     * Inserts the <key,value> pair in the data structure.
+     * Inserted only when the key is not present, Otherwise displays en error message.
+     *
+     * @param key Key having 8-digits.
+     * @param value value corresponding to the key.
+     */
     public void add(long key, int value) {
         if (method_1 == 1) {
-            if (bst.searchNode(key) == null) {
-                bst.insertNode(key, value);
+            if (bst.searchNode(key) == null) { // Checks for the key in BST.
+                bst.insertNode(key, value); // If not present, then insert.
             } else {
-                System.out.println("Key already exists!!!!");
+                wrongKeyCount++;
+                System.out.println("Key already exists!!!!"); //Otherwise display error message.
             }
         } else if (method_2 == 1) {
-            if (!map.containsKey(key)) {
-                map.put(key, value);
+            if (!map.containsKey(key)) { // Checks for the key in BST.
+                map.put(key, value); // If not present, then insert.
             } else {
-                System.out.println("Key already exists!!!!");
+                wrongKeyCount++;
+                System.out.println("Key already exists!!!!"); //Otherwise display error message.
             }
         }
     }
 
+    /**
+     * Removes the key from data structure.
+     * If key is not present then displays an error message.
+     *
+     * @param key Key required to be removed.
+     */
     public void remove(Long key) {
         if (method_1 == 1) {
             if (bst.searchNode(key) != null) {
@@ -92,6 +138,11 @@ public class CleverSIDC<K, V> {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public int getValues(long key) {
         if (method_1 == 1) {
             if (bst.searchNode(key) != null) {

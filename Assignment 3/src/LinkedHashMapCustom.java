@@ -1,7 +1,7 @@
 public class LinkedHashMapCustom<K, V> {
 
     private Entry<K, V>[] table;   //Array of Entry.
-    private int capacity = 4;  //Initial capacity of HashMap
+    private int capacity = 1000000;  //Initial capacity of HashMap
     private Entry<K, V> header; //head of the doubly linked list.
     private Entry<K, V> last; //last of the doubly linked list.
 

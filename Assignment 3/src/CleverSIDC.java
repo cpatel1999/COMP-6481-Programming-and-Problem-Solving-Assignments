@@ -21,6 +21,8 @@ public class CleverSIDC {
 
     public final static long KEY_LENGTH = 100000000; // Final variable to define the length of key, here 8-digits.
     private static int wrongKeyCount = 0;
+
+    private static int rightKeyCount = 0;
     public int method_1 = 0, method_2 = 0; // Used to select data structure.
     ArrayListCustom<Long> list; //Holds arraylist, created manually from scratch.
     private LinkedHashMapCustom<Long, Integer> map; //Holds LinkedHashMap, created manually from scratch.
@@ -34,8 +36,22 @@ public class CleverSIDC {
         bst = new BinarySearchTreeIterative();
     }
 
+    /**
+     * Returns the number of duplicate keys available in the file.
+     *
+      * @return count for duplicate keys.
+     */
     public static int getWrongKeyCount() {
         return wrongKeyCount;
+    }
+
+    /**
+     * Returns the number of unique keys available in the file.
+     *
+     * @return count for unique keys.
+     */
+    public static int getRightKeyCount() {
+        return rightKeyCount;
     }
 
     /**
@@ -46,10 +62,10 @@ public class CleverSIDC {
      * @param size Threshold value
      */
     public void setSIDCThreshold(long size) {
-        if (size > 0 && size < 100) {
-            method_1 = 1;
-        } else if (size >= 100 && size <= 500000) {
+        if (size > 0 && size < 1000) {
             method_2 = 1;
+        } else if (size >= 1000 && size <= 500000) {
+            method_1 = 1;
         } else {
             System.out.println("Threshold is very high!!!!");
             return;
@@ -63,17 +79,19 @@ public class CleverSIDC {
      */
     public void generate() {
         Long randomKey = ThreadLocalRandom.current().nextLong(100000000);
-        if (method_2 == 1) {
+        if (method_1 == 1) {
             while (bst.searchNode(randomKey) != null) {  // Checks if the key is already present or not.
                 randomKey = ThreadLocalRandom.current().nextLong(100000000); // If present, then generates again.
             }
             int randomValue = ThreadLocalRandom.current().nextInt(1000000);
+            System.out.println("Inserted (Key, Value) pair is (" + randomKey + ", " + randomValue + ").");
             bst.insertNode(randomKey, randomValue); // Inserts the <key,value> pair in the selected data structure.
         } else if (method_2 == 1) {
             while (map.get(randomKey) != null) {  // Checks if the key is already present or not.
                 randomKey = ThreadLocalRandom.current().nextLong(100000000); // If present, then generates again.
             }
             int randomValue = ThreadLocalRandom.current().nextInt(1000000);
+            System.out.println("Inserted (Key, Value) pair is (" + randomKey + ", " + randomValue + ").");
             map.put(randomKey, randomValue); // Inserts the <key,value> pair in the selected data structure.
         }
     }
@@ -103,6 +121,7 @@ public class CleverSIDC {
         if (method_1 == 1) {
             if (bst.searchNode(key) == null) { // Checks for the key in BST.
                 bst.insertNode(key, value); // If not present, then insert.
+                rightKeyCount++;
             } else {
                 wrongKeyCount++;
                 System.out.println("Key already exists!!!!"); //Otherwise display error message.
@@ -110,6 +129,7 @@ public class CleverSIDC {
         } else if (method_2 == 1) {
             if (!map.containsKey(key)) { // Checks for the key in BST.
                 map.put(key, value); // If not present, then insert.
+                rightKeyCount++;
             } else {
                 wrongKeyCount++;
                 System.out.println("Key already exists!!!!"); //Otherwise display error message.
@@ -153,9 +173,8 @@ public class CleverSIDC {
                 return -1; // Otherwise returns -1
             }
         } else if (method_2 == 1) {
-            int value = map.get(key); // Search for the key
             if (map.get(key) != null) {
-                return value; // Returns the value if key is present.
+                return map.get(key); // Returns the value if key is present.
             } else {
                 return -1; // Otherwise returns -1
             }

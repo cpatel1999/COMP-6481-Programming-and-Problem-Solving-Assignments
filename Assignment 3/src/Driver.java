@@ -33,8 +33,8 @@ public class Driver {
         Random random = new Random();
         //System.out.println(Math.abs(l_key.hashCode()));
         try {
-            sc = new Scanner(new FileInputStream("NASTA_test_file3.txt"));
-            pw = new PrintWriter(new FileOutputStream("output1.txt"), true);
+            sc = new Scanner(new FileInputStream("NASTA_test_file1.txt"));
+            pw = new PrintWriter(new FileOutputStream("NASTA_test_file1_output.txt"), true);
             while (sc.hasNextLine()) {
                 String line = sc.nextLine(); // Reads data from test file.
                 if (!line.equals("")) {
@@ -48,17 +48,17 @@ public class Driver {
                 }
             }
             pw.println("Total " + count + " keys are present in the file");
-            System.out.println("Total unique keys are : " + cleverSIDC.getRightKeyCount());
-            System.out.println("Total duplicate keys are :" + cleverSIDC.getWrongKeyCount());
+            pw.println("Total unique keys are : " + cleverSIDC.getRightKeyCount());
+            pw.println("Total duplicate keys are :" + cleverSIDC.getWrongKeyCount());
             pw.println();
 
             //Second method --> generate()
-            cleverSIDC.generate();
+            pw.println(cleverSIDC.generate());
 
 
             // Third method --> allKeys()
             // All keys in sorted order
-            System.out.println("All keys in sorted order: ");
+            pw.println("All keys in sorted order: ");
             ArrayListCustom<Long> list = cleverSIDC.allKeys();
             for (int i = 0; i < list.getSize(); i++) {
                 pw.println(list.get(i));
@@ -67,40 +67,48 @@ public class Driver {
             // Fifth method --> remove(key)
             // Removing the value
             long removeKey = 70188256;
-            System.out.println("Removing 70188256" );
-            cleverSIDC.remove(removeKey);
+            pw.println("Removing 70188256" );
+            pw.println(cleverSIDC.remove(removeKey));
 
             // Sixth method --> getValue(key)
             // Values corresponding to given key.
-            int ret = cleverSIDC.getValues(70188256);
+            long KEY = 70188256;
+            int ret = cleverSIDC.getValues(KEY);
             if (ret == -1) {
-                System.out.println("Key not present...");
+                pw.println("Key " + KEY + " not present...");
             } else {
-                System.out.println(ret);
+                pw.println("Value of " + KEY + " is " + ret);
             }
 
+            // Seventh method --> nextKey(key)
             // Next key of the given key,
-            long retNextKey = cleverSIDC.nextKey(70188256);
+            KEY = 70188256;
+            long retNextKey = cleverSIDC.nextKey(KEY);
             if (retNextKey == -1) {
-                System.out.println("No next key...");
+                pw.println("No next key...");
             } else if (retNextKey == 0) {
-                System.out.println("Key doesn't exists...");
+                pw.println("Key doesn't exists...");
             } else {
-                System.out.println(retNextKey);
+                pw.println("Next key of " + KEY + " is " + retNextKey);
             }
 
+            // Eighth method --> prevKey(key)
             // Previous key of the given key.
-            long retPrevKey = cleverSIDC.prevKey(70188256);
+            KEY = 70188256;
+            long retPrevKey = cleverSIDC.prevKey(KEY);
             if (retPrevKey == -1) {
-                System.out.println("No previous key...");
+                pw.println("No previous key...");
             } else if (retPrevKey == 0) {
-                System.out.println("Key doesn't exists...");
+                pw.println("Key doesn't exists...");
             } else {
-                System.out.println(retPrevKey);
+                pw.println("Previous key of " + KEY + " is " + retPrevKey);
             }
 
+            // Ninth method --> rangeKey(key1, key2)
             // Displays the count of the keys between the specified range.
-            System.out.println(cleverSIDC.rangeKey(70110860, 70182741));
+            long KEY1 = 70110860;
+            long KEY2 = 70182741;
+            pw.println("Number of keys between " + KEY1 + " and " + KEY2 + " are " + cleverSIDC.rangeKey(KEY1, KEY2));
 
         } catch (FileNotFoundException e) {
             System.out.println("Cannot find file");

@@ -77,23 +77,25 @@ public class CleverSIDC {
      * If key is already present in the data structure, then it generates again until the generated key is not present.
      * And it stores the <key,value> pair in an appropriate data structure.
      */
-    public void generate() {
+    public String generate() {
+        String str = "";
         Long randomKey = ThreadLocalRandom.current().nextLong(100000000);
         if (method_1 == 1) {
             while (bst.searchNode(randomKey) != null) {  // Checks if the key is already present or not.
                 randomKey = ThreadLocalRandom.current().nextLong(100000000); // If present, then generates again.
             }
             int randomValue = ThreadLocalRandom.current().nextInt(1000000);
-            System.out.println("Inserted (Key, Value) pair is (" + randomKey + ", " + randomValue + ").");
+            str = "Inserted (Key, Value) pair is (" + randomKey + ", " + randomValue + ").";
             bst.insertNode(randomKey, randomValue); // Inserts the <key,value> pair in the selected data structure.
         } else if (method_2 == 1) {
             while (map.get(randomKey) != null) {  // Checks if the key is already present or not.
                 randomKey = ThreadLocalRandom.current().nextLong(100000000); // If present, then generates again.
             }
             int randomValue = ThreadLocalRandom.current().nextInt(1000000);
-            System.out.println("Inserted (Key, Value) pair is (" + randomKey + ", " + randomValue + ").");
+            str = "Inserted (Key, Value) pair is (" + randomKey + ", " + randomValue + ").";
             map.put(randomKey, randomValue); // Inserts the <key,value> pair in the selected data structure.
         }
+        return str;
     }
 
     /**
@@ -143,20 +145,24 @@ public class CleverSIDC {
      *
      * @param key Key required to be removed.
      */
-    public void remove(Long key) {
+    public String remove(Long key) {
+        String str = "";
         if (method_1 == 1) {
             if (bst.searchNode(key) != null) {
                 bst.deleteNode(key);
+                str = "Key is removed successfully.";
             } else {
-                System.out.println("Key not found!!!!");
+                str = "Key not found!!!!";
             }
         } else if (method_2 == 1) {
             if (map.containsKey(key)) {
                 map.remove(key);
+                str = "Key is removed successfully.";
             } else {
-                System.out.println("Key not found!!!!");
+                str = "Key not found!!!!";
             }
         }
+        return str;
     }
 
     /**

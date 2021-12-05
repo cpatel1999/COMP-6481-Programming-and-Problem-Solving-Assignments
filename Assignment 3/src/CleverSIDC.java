@@ -55,6 +55,15 @@ public class CleverSIDC {
         return rightKeyCount;
     }
 
+    /**
+     * Helper method
+     * Generates the random number between the specific range.
+     *
+     * @param min Lower bound
+     * @param max Upper bound
+     * @param rng random number
+     * @return next random number
+     */
     static int nextIntInRange(int min, int max, Random rng) {
         if (min > max) {
             throw new IllegalArgumentException("Cannot draw random int from invalid range [" + min + ", " + max + "].");
@@ -307,7 +316,6 @@ public class CleverSIDC {
         }
         return counter;
     }
-
 
     /**
      * Helper Method

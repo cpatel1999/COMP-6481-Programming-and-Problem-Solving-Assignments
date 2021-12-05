@@ -6,6 +6,9 @@ public class LinkedHashMapCustom<K, V> {
     private Entry<K, V> last; //last of the doubly linked list.
 
     @SuppressWarnings("unchecked")
+    /**
+     * Parameterized constructor to initialize hash table.
+     */
     public LinkedHashMapCustom() {
         table = new Entry[capacity];
     }
@@ -41,6 +44,12 @@ public class LinkedHashMapCustom<K, V> {
         System.out.println(linkedHashMapCustom.get(2));
     }
 
+    /**
+     * Puts (Key, Value) pair in the hash table.
+     *
+     * @param newKey Key
+     * @param data Value
+     */
     public void put(K newKey, V data) {
         if (newKey == null)
             return;    //does not allow to store null.
@@ -74,6 +83,11 @@ public class LinkedHashMapCustom<K, V> {
     }
 
 
+    /**
+     * It maintains order after Insertion
+     *
+     * @param newEntry new Entry.
+     */
     private void maintainOrderAfterInsert(Entry<K, V> newEntry) {
 
         if (header == null) {

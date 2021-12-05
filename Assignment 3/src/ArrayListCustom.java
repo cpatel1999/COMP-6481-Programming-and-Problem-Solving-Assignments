@@ -132,15 +132,15 @@ class ArrayListCustom<E> {
         return -1;
     }
 
-    public void sort(ArrayListCustom<E> list)
+    /**
+     * Sets the value of particular index.
+     *
+     * @param index index of arrayList
+     * @param value value
+     */
+    public void set(int index, E value)
     {
-        int q;
-        int start = 0;
-        int end = list.getSize();
-        if(start < end)
-        {
-            
-        }
+        elementData[index] = value;
     }
 }
 

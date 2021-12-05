@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -39,7 +40,7 @@ public class CleverSIDC {
     /**
      * Returns the number of duplicate keys available in the file.
      *
-      * @return count for duplicate keys.
+     * @return count for duplicate keys.
      */
     public static int getWrongKeyCount() {
         return wrongKeyCount;
@@ -52,6 +53,21 @@ public class CleverSIDC {
      */
     public static int getRightKeyCount() {
         return rightKeyCount;
+    }
+
+    static int nextIntInRange(int min, int max, Random rng) {
+        if (min > max) {
+            throw new IllegalArgumentException("Cannot draw random int from invalid range [" + min + ", " + max + "].");
+        }
+        int diff = max - min;
+        if (diff >= 0 && diff != Integer.MAX_VALUE) {
+            return (min + rng.nextInt(diff + 1));
+        }
+        int i;
+        do {
+            i = rng.nextInt();
+        } while (i < min || i > max);
+        return i;
     }
 
     /**
@@ -108,7 +124,9 @@ public class CleverSIDC {
             list = bst.keysReturn();
         } else if (method_2 == 1) {
             list = map.keysReturn();
-            list.sort(list);
+            int start = 0;
+            int end = list.getSize() - 1;
+            sort(start, end);
         }
         return list;
     }
@@ -202,7 +220,7 @@ public class CleverSIDC {
             keyList = bst.keysReturn();
         } else if (method_2 == 1) {
             keyList = map.keysReturn();
-        }else {
+        } else {
             return 0;
         }
         int i = 0;
@@ -235,8 +253,7 @@ public class CleverSIDC {
             keyList = bst.keysReturn();
         } else if (method_2 == 1) {
             keyList = map.keysReturn(); // List of all keys
-        }
-        else {
+        } else {
             return 0;
         }
         int i = 0;
@@ -289,5 +306,60 @@ public class CleverSIDC {
             i++;
         }
         return counter;
+    }
+
+
+    /**
+     * Helper Method
+     * Performs recursive sorting of arrayList.
+     *
+     * @param start starting index
+     * @param end   End index
+     */
+    public void sort(int start, int end) {
+        int q;
+        if (start < end) {
+            q = partition(start, end);
+            sort(start, q);
+            sort(q + 1, end);
+        }
+    }
+
+    /**
+     * Helper Method
+     * Divides array into two part depending upon the value of pivot.
+     *
+     * @param start Start index
+     * @param end   End index
+     * @return Index
+     */
+    public int partition(int start, int end) {
+        int init = start;
+        int length = end;
+
+        Random r = new Random();
+        int pivotIndex = nextIntInRange(start, end, r);
+        long pivot = list.get(pivotIndex);
+
+        while (true) {
+            while (list.get(length) > pivot && length > start) {
+                length--;
+            }
+
+            while (list.get(init) < pivot && init < end) {
+                init++;
+            }
+            if (init < length) {
+                long temp;
+                temp = list.get(init);
+                list.set(init, list.get(length));
+                list.set(length, temp);
+                length--;
+                init++;
+
+            } else {
+                return length;
+            }
+        }
     }
 }

@@ -108,6 +108,7 @@ public class CleverSIDC {
             list = bst.keysReturn();
         } else if (method_2 == 1) {
             list = map.keysReturn();
+            list.sort(list);
         }
         return list;
     }
@@ -196,36 +197,29 @@ public class CleverSIDC {
      * @return next of the given key
      */
     public long nextKey(long key) {
+        ArrayListCustom keyList;
         if (method_1 == 1) {
-            Node node;
-            node = bst.searchNode(key); // Search for the key
-            if (node != null) {
-                if (node.left == null && node.right == null) { // If key is at the leaf node position then no next key, returns -1
-                    return -1;
-                } else if (node.left == null) { // If no left child, then returns right child.
-                    return node.right.data;
-                } else if (node.right == null) { // If no right child, then returns left child.
-                    return node.left.data;
-                } else {
-                    // We can return key from the left or right node. But here I have returned a key stored in the right node
-                    return node.right.data; // If both child nodes exists, then returns right child.
-                }
-            } else {
-                return 0; // Returns zero if key is not present.
-            }
+            keyList = bst.keysReturn();
         } else if (method_2 == 1) {
-            LinkedHashMapCustom.Entry<Long, Integer> temp = map.find(key); // Search for the key
-            if (temp != null) {
-                if (temp.next != null) { // If key is not at the last position then returns next key.
-                    return temp.next.key;
-                } else {
-                    return -1; // If key is at the last position, then returns -1.
-                }
-            } else {
-                return 0; // If key is not present then returns 0.
-            }
-        } else {
+            keyList = map.keysReturn();
+        }else {
             return 0;
+        }
+        int i = 0;
+        int flag = 0;
+        while (i < keyList.getSize()) {
+            if ((Long) keyList.get(i) == key) {
+                flag = 1;
+                break; //Breaks the loop if key is present, stores the counter.
+            }
+            i++;
+        }
+        if (flag == 1 && i != 0) {
+            return (Long) keyList.get(i + 1); //Returns the key available at (counter + 1) position.
+        } else if (flag == 1 && i == 0) {
+            return -1; // Returns -1 if key is at first position.
+        } else {
+            return 0; // Returns 0 if key is not present.
         }
     }
 
@@ -236,41 +230,40 @@ public class CleverSIDC {
      * @return Previous key of the given key.
      */
     public long prevKey(long key) {
+        ArrayListCustom keyList;
         if (method_1 == 1) {
-            Node node;
-            node = bst.searchNode(key); // Search for the key.
-            if (node != null) { // If key is present then
-                if (node.parent == null) { // If key is at the root position, then no previous key, returns -1.
-                    return -1;
-                } else {
-                    return node.parent.data; //Otherwise, returns the key of the parent node as a previous key,
-                }
-            } else {
-                return 0; // Returns 0, if key is not present.
-            }
+            keyList = bst.keysReturn();
         } else if (method_2 == 1) {
-            ArrayListCustom keyList = map.keysReturn(); // List of all keys
-            int i = 0;
-            int flag = 0;
-            while (i < keyList.getSize()) {
-                if ((Long) keyList.get(i) == key) {
-                    flag = 1;
-                    break; //Breaks the loop is key is present, stores the counter.
-                }
-                i++;
-            }
-            if (flag == 1 && i != 0) {
-                return (Long) keyList.get(i - 1); //Returns the key available at (counter - 1) position.
-            } else if (flag == 1 && i == 0) {
-                return -1; // Returns -1 if key is not present.
-            } else {
-                return 0;
-            }
-        } else {
+            keyList = map.keysReturn(); // List of all keys
+        }
+        else {
             return 0;
+        }
+        int i = 0;
+        int flag = 0;
+        while (i < keyList.getSize()) {
+            if ((Long) keyList.get(i) == key) {
+                flag = 1;
+                break; //Breaks the loop if key is present, stores the counter.
+            }
+            i++;
+        }
+        if (flag == 1 && i != 0) {
+            return (Long) keyList.get(i - 1); //Returns the key available at (counter - 1) position.
+        } else if (flag == 1 && i == 0) {
+            return -1; // Returns -1 if key is at first position.
+        } else {
+            return 0; // Returns 0 if key is not present.
         }
     }
 
+    /**
+     * Counts the number of keys between the specified range.
+     *
+     * @param key1 start
+     * @param key2 end
+     * @return count of keys
+     */
     public int rangeKey(long key1, long key2) {
         ArrayListCustom keyList = null;
         int i = 0;

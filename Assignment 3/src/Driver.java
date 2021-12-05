@@ -19,9 +19,9 @@ public class Driver {
 
     public static void main(String args[]) {
         CleverSIDC cleverSIDC = new CleverSIDC();
-        
+
         // First method  --> setThreshold()
-        cleverSIDC.setSIDCThreshold(1001);//Sets threshold value, it is used to select the data structure to store value.
+        cleverSIDC.setSIDCThreshold(999);//Sets threshold value, it is used to select the data structure to store value.
 
         Scanner sc = null;
         PrintWriter pw = null;
@@ -33,7 +33,7 @@ public class Driver {
         Random random = new Random();
         //System.out.println(Math.abs(l_key.hashCode()));
         try {
-            sc = new Scanner(new FileInputStream("NASTA_test_file1.txt"));
+            sc = new Scanner(new FileInputStream("SampleDataset3.txt"));
             pw = new PrintWriter(new FileOutputStream("NASTA_test_file1_output.txt"), true);
             while (sc.hasNextLine()) {
                 String line = sc.nextLine(); // Reads data from test file.
@@ -66,13 +66,13 @@ public class Driver {
 
             // Fifth method --> remove(key)
             // Removing the value
-            long removeKey = 70188256;
-            pw.println("Removing 70188256" );
+            long removeKey = 84100284;
+            pw.println("Removing " + removeKey);
             pw.println(cleverSIDC.remove(removeKey));
 
             // Sixth method --> getValue(key)
             // Values corresponding to given key.
-            long KEY = 70188256;
+            long KEY = 84100284;
             int ret = cleverSIDC.getValues(KEY);
             if (ret == -1) {
                 pw.println("Key " + KEY + " not present...");
@@ -82,7 +82,7 @@ public class Driver {
 
             // Seventh method --> nextKey(key)
             // Next key of the given key,
-            KEY = 70188256;
+            KEY = 48503482;
             long retNextKey = cleverSIDC.nextKey(KEY);
             if (retNextKey == -1) {
                 pw.println("No next key...");
@@ -94,7 +94,7 @@ public class Driver {
 
             // Eighth method --> prevKey(key)
             // Previous key of the given key.
-            KEY = 70188256;
+            KEY = 48503482;
             long retPrevKey = cleverSIDC.prevKey(KEY);
             if (retPrevKey == -1) {
                 pw.println("No previous key...");
@@ -106,8 +106,8 @@ public class Driver {
 
             // Ninth method --> rangeKey(key1, key2)
             // Displays the count of the keys between the specified range.
-            long KEY1 = 70110860;
-            long KEY2 = 70182741;
+            long KEY1 = 99985793;
+            long KEY2 = 99986617;
             pw.println("Number of keys between " + KEY1 + " and " + KEY2 + " are " + cleverSIDC.rangeKey(KEY1, KEY2));
 
         } catch (FileNotFoundException e) {

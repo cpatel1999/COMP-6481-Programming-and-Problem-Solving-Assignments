@@ -131,5 +131,16 @@ class ArrayListCustom<E> {
         }
         return -1;
     }
+
+    public void sort(ArrayListCustom<E> list)
+    {
+        int q;
+        int start = 0;
+        int end = list.getSize();
+        if(start < end)
+        {
+            
+        }
+    }
 }
 
